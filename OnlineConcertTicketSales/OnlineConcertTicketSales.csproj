@@ -12,4 +12,8 @@
       <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Project\internal_logs" />
+    </ItemGroup>
+
 </Project>
