@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -12,5 +14,7 @@ namespace Entities.Models.Concerts
         [Required(ErrorMessage = "Genre name is a required field.")]
         [MaxLength(30, ErrorMessage = "Maximum length for the Genre Name is 30 characters.")]
         public string GenreName { get; set; }
+        
+        public ICollection<Artist> Artists { get; set; }
     }
 }

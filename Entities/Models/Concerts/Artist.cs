@@ -11,6 +11,10 @@ namespace Entities.Models.Concerts
         
         [Required(ErrorMessage = "Artist name is a required field.")]
         [MaxLength(60, ErrorMessage = "Maximum length for the Artist Name is 60 characters.")]
-        public string GenreName { get; set; }
+        public string ArtistName { get; set; }
+        
+        [ForeignKey(nameof(Genre))]
+        public Guid GenreId { get; set; }
+        public Genre Genre { get; set; }
     }
 }
