@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Contracts;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineConcertTicketSales.Controllers
@@ -23,14 +25,20 @@ namespace OnlineConcertTicketSales.Controllers
             try
             {
                 var genres = _serviceManager.Genre.GetAllGenres(false);
-                return Ok(genres);
+
+                var genresDto = genres.Select(g => new GenreDto
+                {
+                    Id = g.Id,
+                    GenreName = g.GenreName
+                }).ToList();
+
+                return Ok(genresDto);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Something went wrong in the {nameof(GetGenres)} action {ex}");
-            return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Internal server error");
             }
         }
-        
     }
 }
