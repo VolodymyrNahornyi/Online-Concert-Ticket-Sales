@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Contracts;
 using Entities;
@@ -17,6 +18,12 @@ namespace Repository
             return FindAll(trackChanges)
                 .OrderBy(g => g.GenreName)
                 .ToList();
+        }
+
+        public Genre GetGenre(Guid genreId, bool trackChanges)
+        {
+            return FindByCondition(g => g.Id.Equals(genreId), trackChanges)
+                .SingleOrDefault();
         }
     }
 }

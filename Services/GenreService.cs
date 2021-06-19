@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Contracts;
 using Entities.Models.Concerts;
 
@@ -15,7 +16,12 @@ namespace Services
 
         public IEnumerable<Genre> GetAllGenres(bool trackChanges)
         {
-            return _repositoryManager.Genre.GetAllGenres(false);
+            return _repositoryManager.Genre.GetAllGenres(trackChanges);
+        }
+
+        public Genre GetGenre(Guid genreId, bool trackChanges)
+        {
+            return _repositoryManager.Genre.GetGenre(genreId, trackChanges);
         }
     }
 }

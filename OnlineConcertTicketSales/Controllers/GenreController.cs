@@ -32,5 +32,21 @@ namespace OnlineConcertTicketSales.Controllers
 
             return Ok(genresDto);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetGenre(Guid id)
+        {
+            var genre = _serviceManager.Genre.GetGenre(id, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            else
+            {
+                var genreDto = _mapper.Map<GenreDto>(genre);
+                return Ok(genreDto);
+            }
+        }
     }
 }
