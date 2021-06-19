@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
+using Services;
 
 namespace OnlineConcertTicketSales.Extensions
 {
@@ -39,7 +40,7 @@ namespace OnlineConcertTicketSales.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
         
         public static void ConfigureServiceManager(this IServiceCollection services) =>
-            services.AddScoped<IServiceManager, IServiceManager>();
+            services.AddScoped<IServiceManager, ServiceManager>();
 
     }
 }
