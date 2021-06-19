@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +14,13 @@ namespace OnlineConcertTicketSales.Controllers
     {
         private readonly IServiceManager _serviceManager;
         private readonly ILoggerManager _logger;
+        private readonly IMapper _mapper;
 
-        public GenreController(IServiceManager serviceManager, ILoggerManager loggerManager)
+        public GenreController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper)
         {
             _serviceManager = serviceManager;
             _logger = loggerManager;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -26,11 +30,7 @@ namespace OnlineConcertTicketSales.Controllers
             {
                 var genres = _serviceManager.Genre.GetAllGenres(false);
 
-                var genresDto = genres.Select(g => new GenreDto
-                {
-                    Id = g.Id,
-                    GenreName = g.GenreName
-                }).ToList();
+                var genresDto = _mapper.Map<IEnumerable<GenreDto>>(genres);
 
                 return Ok(genresDto);
             }
