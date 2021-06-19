@@ -26,19 +26,11 @@ namespace OnlineConcertTicketSales.Controllers
         [HttpGet]
         public IActionResult GetGenres()
         {
-            try
-            {
-                var genres = _serviceManager.Genre.GetAllGenres(false);
+            var genres = _serviceManager.Genre.GetAllGenres(false);
 
-                var genresDto = _mapper.Map<IEnumerable<GenreDto>>(genres);
+            var genresDto = _mapper.Map<IEnumerable<GenreDto>>(genres);
 
-                return Ok(genresDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(GetGenres)} action {ex}");
-                return StatusCode(500, "Internal server error");
-            }
+            return Ok(genresDto);
         }
     }
 }
