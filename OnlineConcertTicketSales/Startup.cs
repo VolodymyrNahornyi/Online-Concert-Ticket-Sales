@@ -39,6 +39,7 @@ namespace OnlineConcertTicketSales
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.ConfigureServiceManager();
+            services.AddAutoMapper(typeof(Startup));
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
