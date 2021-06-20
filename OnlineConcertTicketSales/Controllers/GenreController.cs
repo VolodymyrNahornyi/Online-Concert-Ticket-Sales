@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
+using Entities.Models.Concerts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineConcertTicketSales.Controllers
@@ -47,6 +48,26 @@ namespace OnlineConcertTicketSales.Controllers
                 var genreDto = _mapper.Map<GenreDto>(genre);
                 return Ok(genreDto);
             }
+        }
+
+        [HttpPost]
+        public IActionResult CreateGenre([FromBody] GenreForCreationDto genre)
+        {
+            if (genre == null)
+            {
+                _logger.LogError("GenreForCreationDto object sent from client is null.");
+                return BadRequest("GenreForCreationDto object is null");
+            }
+
+            var genreEntity = _mapper.Map<Genre>(genre);
+            
+            _serviceManager.Genre.CreateGenre(genreEntity);
+            _serviceManager.Save();
+
+            var genreToReturn = _mapper.Map<GenreDto>(genreEntity);
+
+            return CreatedAtRoute("GenreById", new {id = genreToReturn.Id}, genreToReturn);
+
         }
     }
 }
