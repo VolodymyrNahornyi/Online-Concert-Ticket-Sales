@@ -10,13 +10,13 @@ namespace OnlineConcertTicketSales.Controllers
 {
     [Route("api/genres")]
     [ApiController]
-    public class GenreController : ControllerBase
+    public class r : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public GenreController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper)
+        public r(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper)
         {
             _serviceManager = serviceManager;
             _logger = loggerManager;
@@ -33,7 +33,7 @@ namespace OnlineConcertTicketSales.Controllers
             return Ok(genresDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GenreById")]
         public IActionResult GetGenre(Guid id)
         {
             var genre = _serviceManager.Genre.GetGenre(id, false);
