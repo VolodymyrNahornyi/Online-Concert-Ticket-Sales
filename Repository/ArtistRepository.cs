@@ -24,5 +24,11 @@ namespace Repository
             return FindByCondition(a => a.GenreId.Equals(genreId) && a.Id.Equals(id), trackChanges)
                 .SingleOrDefault();
         }
+
+        public void CreateArtist(Guid genreId, Artist artist)
+        {
+            artist.GenreId = genreId;
+            Create(artist);
+        }
     }
 }

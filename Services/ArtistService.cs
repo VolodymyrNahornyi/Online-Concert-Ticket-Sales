@@ -23,5 +23,10 @@ namespace Services
         {
             return _repositoryManager.Artist.GetArtist(genreId, id, trackChanges);
         }
+
+        public void CreateArtist(Guid genreId, Artist artist)
+        {
+            _repositoryManager.Artist.CreateArtist(genreId, artist);
+        }
     }
 }

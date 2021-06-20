@@ -39,7 +39,7 @@ namespace OnlineConcertTicketSales.Controllers
             return Ok(artistsDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetArtistForGenre")]
         public IActionResult GetArtistForGenre(Guid genreId, Guid id)
         {
             var genre = _serviceManager.Genre.GetGenre(genreId, false);
@@ -59,7 +59,33 @@ namespace OnlineConcertTicketSales.Controllers
             var artistDto = _mapper.Map<ArtistDto>(artistFromDb);
 
             return Ok(artistDto);
+        }
 
+        [HttpPost]
+        public IActionResult CreateArtistForGenre(Guid genreId, [FromBody]ArtistForCreationDto artist)
+        {
+            if (artist == null)
+            {
+                _logger.LogError("ArtistForCreationDto object sent from client is null.");
+                return BadRequest("ArtistForCreationDto  object is null");
+            }
+
+            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogError($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var artistEntity = _mapper.Map<Artist>(artist);
+            
+            _serviceManager.Artist.CreateArtist(genreId, artistEntity);
+            _serviceManager.Save();
+
+            var artistToReturn = _mapper.Map<ArtistDto>(artistEntity);
+
+            return CreatedAtRoute("GetArtistForGenre", new {genreId, id = artistToReturn.Id},
+                artistToReturn);
         }
         
     }
