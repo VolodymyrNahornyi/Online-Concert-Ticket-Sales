@@ -37,5 +37,9 @@ namespace Services
             }
         }
 
+        public void Save()
+        {
+            _repositoryManager.Save();
+        }
     }
 }

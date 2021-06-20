@@ -4,5 +4,6 @@
     {
         IGenreService Genre { get; }
         IArtistService Artist { get; }
+        void Save();
     }
 }
