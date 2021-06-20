@@ -9,6 +9,7 @@ namespace OnlineConcertTicketSales
         public MappingProfile()
         {
             CreateMap<Genre, GenreDto>();
+            CreateMap<Artist, ArtistDto>();
         }
     }
 }
