@@ -25,5 +25,10 @@ namespace Repository
             return FindByCondition(g => g.Id.Equals(genreId), trackChanges)
                 .SingleOrDefault();
         }
+
+        public void CreateGenre(Genre genre)
+        {
+            Create(genre);
+        }
     }
 }

@@ -23,5 +23,10 @@ namespace Services
         {
             return _repositoryManager.Genre.GetGenre(genreId, trackChanges);
         }
+
+        public void CreateGenre(Genre genre)
+        {
+            _repositoryManager.Genre.CreateGenre(genre);
+        }
     }
 }
