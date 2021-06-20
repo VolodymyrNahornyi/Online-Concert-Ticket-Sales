@@ -42,12 +42,12 @@ namespace OnlineConcertTicketSales
             services.ConfigureServiceManager();
             services.AddAutoMapper(typeof(Startup));
 
-            //services.AddControllers();
             services.AddControllers(config =>
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters();
+            }).AddXmlDataContractSerializerFormatters()
+                .AddCustomCSVFormatter();
             
             services.AddSwaggerGen(c =>
             {

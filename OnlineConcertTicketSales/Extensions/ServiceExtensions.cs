@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineConcertTicketSales.Formatters;
 using Repository;
 using Services;
 
@@ -41,6 +42,10 @@ namespace OnlineConcertTicketSales.Extensions
         
         public static void ConfigureServiceManager(this IServiceCollection services) =>
             services.AddScoped<IServiceManager, ServiceManager>();
+        
+        public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) => 
+            builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter()));
+
 
     }
 }
