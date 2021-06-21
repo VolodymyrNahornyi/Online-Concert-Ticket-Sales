@@ -28,5 +28,10 @@ namespace Services
         {
             _repositoryManager.Genre.CreateGenre(genre);
         }
+
+        public IEnumerable<Genre> GetGenresByIds(IEnumerable<Guid> Ids, bool trackChanges)
+        {
+            return  _repositoryManager.Genre.GetGenresByIds(Ids, trackChanges);
+        }
     }
 }

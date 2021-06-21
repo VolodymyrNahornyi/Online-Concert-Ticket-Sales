@@ -30,5 +30,11 @@ namespace Repository
         {
             Create(genre);
         }
+
+        public IEnumerable<Genre> GetGenresByIds(IEnumerable<Guid> Ids, bool trackChanges)
+        {
+            return FindByCondition(x => Ids.Contains(x.Id), trackChanges)
+                .ToList();
+        }
     }
 }

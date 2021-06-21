@@ -9,5 +9,7 @@ namespace Contracts
         IEnumerable<Genre> GetAllGenres(bool trackChanges);
         Genre GetGenre(Guid genreId, bool trackChanges);
         void CreateGenre(Genre genre);
+        IEnumerable<Genre> GetGenresByIds(IEnumerable<Guid> Ids, bool trackChanges);
+
     }
 }
