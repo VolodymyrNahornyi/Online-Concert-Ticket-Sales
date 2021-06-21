@@ -9,5 +9,6 @@ namespace Contracts
         IEnumerable<Artist> GetArtists(Guid genreId, bool trackChanges);
         Artist GetArtist(Guid genreId, Guid id, bool trackChanges);
         void CreateArtist(Guid genreId, Artist artist);
+        void DeleteArtist(Artist artist);
     }
 }

@@ -28,5 +28,10 @@ namespace Services
         {
             _repositoryManager.Artist.CreateArtist(genreId, artist);
         }
+
+        public void DeleteArtist(Artist artist)
+        {
+            _repositoryManager.Artist.DeleteArtist(artist);
+        }
     }
 }

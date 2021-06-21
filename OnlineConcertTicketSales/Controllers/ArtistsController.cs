@@ -87,6 +87,29 @@ namespace OnlineConcertTicketSales.Controllers
             return CreatedAtRoute("GetArtistForGenre", new {genreId, id = artistToReturn.Id},
                 artistToReturn);
         }
-        
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteArtistForCompany(Guid genreId, Guid id)
+        {
+            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var artistForGenre = _serviceManager.Artist.GetArtist(genreId, id, false);
+
+            if (artistForGenre == null)
+            {
+                _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            _serviceManager.Artist.DeleteArtist(artistForGenre);
+            _serviceManager.Save();
+
+            return NoContent();
+        }
     }
 }

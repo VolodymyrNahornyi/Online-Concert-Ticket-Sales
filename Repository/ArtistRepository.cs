@@ -30,5 +30,10 @@ namespace Repository
             artist.GenreId = genreId;
             Create(artist);
         }
+
+        public void DeleteArtist(Artist artist)
+        {
+            Delete(artist);
+        }
     }
 }
