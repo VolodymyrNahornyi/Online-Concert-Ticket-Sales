@@ -6,6 +6,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Microsoft.AspNetCore.Mvc;
+using OnlineConcertTicketSales.ModelBinders;
 
 namespace OnlineConcertTicketSales.Controllers
 {
@@ -89,7 +90,8 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="Ids">Ids Collection of Genres</param>
         /// <returns></returns>
         [HttpGet("collection/({Ids})", Name = "GenreCollection")]
-        public IActionResult GetGenreCollection(IEnumerable<Guid> Ids)
+        public IActionResult GetGenreCollection([ModelBinder(BinderType = 
+            typeof(ArrayModelBinder))]IEnumerable<Guid> Ids)
         {
             if (Ids == null)
             {
