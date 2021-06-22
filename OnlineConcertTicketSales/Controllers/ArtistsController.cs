@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OnlineConcertTicketSales.Controllers
@@ -136,6 +137,41 @@ namespace OnlineConcertTicketSales.Controllers
             }
 
             _mapper.Map(artist, artistEntity);
+            _serviceManager.Save();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdateArtistForGenre(Guid genreId, Guid id,
+            [FromBody] JsonPatchDocument<ArtistForUpdateDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                _logger.LogError("patchDoc object sent from client is null.");
+                return BadRequest("patchDoc object is null");
+            }
+            
+            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var artistEntity = _serviceManager.Artist.GetArtist(genreId, id, true);
+            if (artistEntity == null)
+            {
+                _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var artistToPatch = _mapper.Map<ArtistForUpdateDto>(artistEntity);
+            
+            patchDoc.ApplyTo(artistToPatch);
+
+            _mapper.Map(artistToPatch, artistEntity);
+            
             _serviceManager.Save();
 
             return NoContent();
