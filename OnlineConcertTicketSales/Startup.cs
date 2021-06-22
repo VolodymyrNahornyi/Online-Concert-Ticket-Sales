@@ -46,7 +46,8 @@ namespace OnlineConcertTicketSales
             {
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters()
+            }).AddNewtonsoftJson()
+                .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter();
             
             services.AddSwaggerGen(c =>
