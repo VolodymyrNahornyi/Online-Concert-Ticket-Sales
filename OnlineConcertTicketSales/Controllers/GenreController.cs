@@ -74,6 +74,12 @@ namespace OnlineConcertTicketSales.Controllers
                 return BadRequest("GenreForCreationDto object is null");
             }
 
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the GenreForCreationDto object");
+                return UnprocessableEntity(ModelState);
+            }
+
             var genreEntity = _mapper.Map<Genre>(genre);
             
             _serviceManager.Genre.CreateGenre(genreEntity);
