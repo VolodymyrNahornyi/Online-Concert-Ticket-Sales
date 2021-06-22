@@ -180,7 +180,15 @@ namespace OnlineConcertTicketSales.Controllers
 
             var artistToPatch = _mapper.Map<ArtistForUpdateDto>(artistEntity);
             
-            patchDoc.ApplyTo(artistToPatch);
+            patchDoc.ApplyTo(artistToPatch, ModelState);
+            
+            TryValidateModel(artistToPatch);
+            
+            if(!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the patch document");
+                return UnprocessableEntity(ModelState);
+            }
 
             _mapper.Map(artistToPatch, artistEntity);
             
