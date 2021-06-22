@@ -6,12 +6,8 @@ using Entities.ValidationAttributes;
 
 namespace Entities.DataTransferObjects
 {
-    public class GenreForCreationDto
+    public class GenreForCreationDto : ArtistForManipulationDto
     {
-        [RequiredEnumField(ErrorMessage = "Genre name is a required field!")]
-        public GenreName GenreName { get; set; }
         
-        
-        public IEnumerable<ArtistForCreationDto> Artists { get; set; }
     }
 }

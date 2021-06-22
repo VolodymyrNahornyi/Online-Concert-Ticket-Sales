@@ -3,10 +3,8 @@ using Entities.Models.Concerts;
 
 namespace Entities.DataTransferObjects
 {
-    public class GenreForUpdateDto
+    public class GenreForUpdateDto : GenreForManipulationDto
     {
-        public GenreName GenreName { get; set; }
-        
-        public IEnumerable<ArtistForCreationDto> Artists { get; set; }
+
     }
 }

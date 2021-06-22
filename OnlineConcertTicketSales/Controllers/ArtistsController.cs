@@ -127,6 +127,12 @@ namespace OnlineConcertTicketSales.Controllers
                 _logger.LogError("ArtistForUpdateDto object sent from client is null.");
                 return BadRequest("ArtistForUpdateDto  object is null");
             }
+            
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the ArtistForUpdateDto object");
+                return UnprocessableEntity(ModelState);
+            }
 
             var genre = _serviceManager.Genre.GetGenre(genreId, false);
             if (genre == null)

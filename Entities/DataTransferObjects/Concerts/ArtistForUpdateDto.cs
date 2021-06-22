@@ -1,7 +1,7 @@
 ﻿namespace Entities.DataTransferObjects
 {
-    public class ArtistForUpdateDto
+    public class ArtistForUpdateDto : ArtistForManipulationDto
     {
-        public string ArtistName { get; set; }
+        
     }
 }
