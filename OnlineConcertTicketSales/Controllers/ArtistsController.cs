@@ -89,7 +89,7 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteArtistForCompany(Guid genreId, Guid id)
+        public IActionResult DeleteArtistForGenre(Guid genreId, Guid id)
         {
             var genre = _serviceManager.Genre.GetGenre(genreId, false);
             if (genre == null)
@@ -107,6 +107,35 @@ namespace OnlineConcertTicketSales.Controllers
             }
             
             _serviceManager.Artist.DeleteArtist(artistForGenre);
+            _serviceManager.Save();
+
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateArtistForGenre(Guid genreId, Guid id, [FromBody] ArtistForUpdateDto artist)
+        {
+            if (artist == null)
+            {
+                _logger.LogError("ArtistForUpdateDto object sent from client is null.");
+                return BadRequest("ArtistForUpdateDto  object is null");
+            }
+
+            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var artistEntity = _serviceManager.Artist.GetArtist(genreId, id, true);
+            if (artistEntity == null)
+            {
+                _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _mapper.Map(artist, artistEntity);
             _serviceManager.Save();
 
             return NoContent();
