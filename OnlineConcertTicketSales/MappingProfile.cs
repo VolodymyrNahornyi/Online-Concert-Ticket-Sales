@@ -12,7 +12,7 @@ namespace OnlineConcertTicketSales
             CreateMap<Artist, ArtistDto>();
             CreateMap<GenreForCreationDto, Genre>();
             CreateMap<ArtistForCreationDto, Artist>();
-            CreateMap<ArtistForUpdateDto, Artist>();
+            CreateMap<ArtistForUpdateDto, Artist>().ReverseMap();
             CreateMap<GenreForUpdateDto, Genre>();
         }
     }
