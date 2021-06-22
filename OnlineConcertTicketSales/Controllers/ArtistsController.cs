@@ -71,6 +71,12 @@ namespace OnlineConcertTicketSales.Controllers
                 return BadRequest("ArtistForCreationDto  object is null");
             }
 
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for the ArtistForCreationDto object");
+                return UnprocessableEntity(ModelState);
+            }
+
             var genre = _serviceManager.Genre.GetGenre(genreId, false);
             if (genre == null)
             {
