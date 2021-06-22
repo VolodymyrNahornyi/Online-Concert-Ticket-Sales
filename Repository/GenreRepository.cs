@@ -36,5 +36,10 @@ namespace Repository
             return FindByCondition(x => Ids.Contains(x.Id), trackChanges)
                 .ToList();
         }
+
+        public void DeleteGenre(Genre genre)
+        {
+            Delete(genre);
+        }
     }
 }

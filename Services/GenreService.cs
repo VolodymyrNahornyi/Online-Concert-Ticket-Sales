@@ -33,5 +33,10 @@ namespace Services
         {
             return  _repositoryManager.Genre.GetGenresByIds(Ids, trackChanges);
         }
+
+        public void DeleteGenre(Genre genre)
+        {
+            _repositoryManager.Genre.DeleteGenre(genre);
+        }
     }
 }

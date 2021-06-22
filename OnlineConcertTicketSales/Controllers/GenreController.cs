@@ -138,6 +138,22 @@ namespace OnlineConcertTicketSales.Controllers
             
             return CreatedAtRoute("GenreCollection", new { ids }, genreCollectionToReturn);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteGenre(Guid id)
+        {
+            var genre = _serviceManager.Genre.GetGenre(id, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            _serviceManager.Genre.DeleteGenre(genre);
+            _serviceManager.Save();
+
+            return NoContent();
+        }
         
     }
 }

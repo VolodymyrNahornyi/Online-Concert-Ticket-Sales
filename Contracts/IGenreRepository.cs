@@ -10,6 +10,6 @@ namespace Contracts
         Genre GetGenre(Guid genreId, bool trackChanges);
         void CreateGenre(Genre genre);
         IEnumerable<Genre> GetGenresByIds(IEnumerable<Guid> Ids, bool trackChanges);
-
+        void DeleteGenre(Genre genre);
     }
 }
