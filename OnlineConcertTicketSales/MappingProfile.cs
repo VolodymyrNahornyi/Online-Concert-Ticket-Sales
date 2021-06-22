@@ -13,6 +13,7 @@ namespace OnlineConcertTicketSales
             CreateMap<GenreForCreationDto, Genre>();
             CreateMap<ArtistForCreationDto, Artist>();
             CreateMap<ArtistForUpdateDto, Artist>();
+            CreateMap<GenreForUpdateDto, Genre>();
         }
     }
 }
