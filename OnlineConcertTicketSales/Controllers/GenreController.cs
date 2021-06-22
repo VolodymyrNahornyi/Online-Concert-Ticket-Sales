@@ -154,6 +154,28 @@ namespace OnlineConcertTicketSales.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateGenre(Guid id, [FromBody]GenreForUpdateDto genre)
+        {
+            if (genre == null)
+            {
+                _logger.LogInfo($"GenreForUpdateDto object sent from client is null.");
+                return BadRequest("GenreForUpdateDto object is null");
+            }
+
+            var genreEntity = _serviceManager.Genre.GetGenre(id, true);
+            if (genreEntity == null)
+            {
+                _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _mapper.Map(genre, genreEntity);
+            _serviceManager.Save();
+
+            return NoContent();
+        }
         
     }
 }
