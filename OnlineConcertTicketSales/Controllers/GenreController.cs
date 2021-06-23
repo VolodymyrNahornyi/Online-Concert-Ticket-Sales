@@ -136,15 +136,11 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ServiceFilter(typeof(ValidateGenreExistsAttribute))]
         public async Task<IActionResult> DeleteGenre(Guid id)
         {
-            var genre = await _serviceManager.Genre.GetGenreAsync(id, false);
-            if (genre == null)
-            {
-                _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
-                return NotFound();
-            }
-            
+            var genre = HttpContext.Items["genre"] as Genre;
+
             _serviceManager.Genre.DeleteGenre(genre);
             await _serviceManager.SaveAsync();
 
@@ -153,14 +149,10 @@ namespace OnlineConcertTicketSales.Controllers
 
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateGenreExistsAttribute))]
         public async Task<IActionResult> UpdateGenre(Guid id, [FromBody]GenreForUpdateDto genre)
         {
-            var genreEntity = await _serviceManager.Genre.GetGenreAsync(id, true);
-            if (genreEntity == null)
-            {
-                _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
-                return NotFound();
-            }
+            var genreEntity = HttpContext.Items["genre"] as Genre;
 
             _mapper.Map(genre, genreEntity);
             await _serviceManager.SaveAsync();
