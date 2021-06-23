@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NLog;
+using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.Extensions;
 
 namespace OnlineConcertTicketSales
@@ -46,6 +47,9 @@ namespace OnlineConcertTicketSales
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            
+            services.AddScoped<ValidationFilterAttribute>();
+
 
             
             services.AddControllers(config =>
