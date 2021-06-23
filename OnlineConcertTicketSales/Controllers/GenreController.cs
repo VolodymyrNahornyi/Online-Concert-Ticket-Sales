@@ -7,6 +7,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Microsoft.AspNetCore.Mvc;
+using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.ModelBinders;
 
 namespace OnlineConcertTicketSales.Controllers
@@ -67,20 +68,9 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="genre">Genre For Creation Dto object [FromBody]</param>
         /// <returns></returns>
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateGenre([FromBody] GenreForCreationDto genre)
         {
-            if (genre == null)
-            {
-                _logger.LogError("GenreForCreationDto object sent from client is null.");
-                return BadRequest("GenreForCreationDto object is null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the GenreForCreationDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var genreEntity = _mapper.Map<Genre>(genre);
             
             _serviceManager.Genre.CreateGenre(genreEntity);
@@ -88,9 +78,6 @@ namespace OnlineConcertTicketSales.Controllers
 
             var genreToReturn = _mapper.Map<GenreDto>(genreEntity);
             
-            // _logger.LogDebug("genreToReturn:");
-            // _logger.LogDebug($"genreToReturn.Id: {genreToReturn.Id}, genreToReturn.GenreName: {genreToReturn.GenreName}");
-
             return CreatedAtRoute("GenreById", new {id = genreToReturn.Id}, genreToReturn);
         }
 
@@ -165,20 +152,9 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateGenre(Guid id, [FromBody]GenreForUpdateDto genre)
         {
-            if (genre == null)
-            {
-                _logger.LogInfo($"GenreForUpdateDto object sent from client is null.");
-                return BadRequest("GenreForUpdateDto object is null");
-            }
-            
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the GenreForUpdateDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var genreEntity = await _serviceManager.Genre.GetGenreAsync(id, true);
             if (genreEntity == null)
             {

@@ -7,6 +7,7 @@ using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using OnlineConcertTicketSales.ActionFilters;
 
 namespace OnlineConcertTicketSales.Controllers
 {
@@ -64,20 +65,9 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateArtistForGenre(Guid genreId, [FromBody]ArtistForCreationDto artist)
         {
-            if (artist == null)
-            {
-                _logger.LogError("ArtistForCreationDto object sent from client is null.");
-                return BadRequest("ArtistForCreationDto  object is null");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the ArtistForCreationDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
@@ -121,20 +111,9 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateArtistForGenre(Guid genreId, Guid id, [FromBody] ArtistForUpdateDto artist)
         {
-            if (artist == null)
-            {
-                _logger.LogError("ArtistForUpdateDto object sent from client is null.");
-                return BadRequest("ArtistForUpdateDto  object is null");
-            }
-            
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Invalid model state for the ArtistForUpdateDto object");
-                return UnprocessableEntity(ModelState);
-            }
-
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
