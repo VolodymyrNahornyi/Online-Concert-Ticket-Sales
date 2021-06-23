@@ -50,6 +50,7 @@ namespace OnlineConcertTicketSales
             
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateGenreExistsAttribute>();
+            services.AddScoped<ValidateArtistForGenreExistsAttribute>();
 
 
             
