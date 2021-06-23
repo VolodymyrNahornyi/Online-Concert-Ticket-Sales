@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models.Concerts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -13,16 +15,17 @@ namespace Repository
         {
         }
 
-        public IEnumerable<Artist> GetArtists(Guid genreId, bool trackChanges)
+        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, bool trackChanges)
         {
-            return FindByCondition(a => a.GenreId.Equals(genreId), trackChanges)
-                .OrderBy(a => a.ArtistName);
+            return await FindByCondition(a => a.GenreId.Equals(genreId), trackChanges)
+                .OrderBy(a => a.ArtistName)
+                .ToListAsync();
         }
 
-        public Artist GetArtist(Guid genreId, Guid id, bool trackChanges)
+        public async Task<Artist> GetArtistAsync(Guid genreId, Guid id, bool trackChanges)
         {
-            return FindByCondition(a => a.GenreId.Equals(genreId) && a.Id.Equals(id), trackChanges)
-                .SingleOrDefault();
+            return await FindByCondition(a => a.GenreId.Equals(genreId) && a.Id.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
         }
 
         public void CreateArtist(Guid genreId, Artist artist)

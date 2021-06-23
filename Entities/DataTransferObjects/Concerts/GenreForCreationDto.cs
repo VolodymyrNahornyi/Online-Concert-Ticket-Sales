@@ -6,7 +6,7 @@ using Entities.ValidationAttributes;
 
 namespace Entities.DataTransferObjects
 {
-    public class GenreForCreationDto : ArtistForManipulationDto
+    public class GenreForCreationDto : GenreForManipulationDto
     {
         
     }

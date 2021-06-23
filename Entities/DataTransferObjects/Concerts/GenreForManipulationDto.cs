@@ -8,8 +8,7 @@ namespace Entities.DataTransferObjects
     {
         [RequiredEnumField(ErrorMessage = "Genre name is a required field!")]
         public GenreName GenreName { get; set; }
-        
-        
+
         public IEnumerable<ArtistForCreationDto> Artists { get; set; }
     }
 }

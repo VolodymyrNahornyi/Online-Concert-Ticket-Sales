@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
@@ -25,32 +26,32 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetArtistsForGenre(Guid genreId)
+        public async Task<IActionResult> GetArtistsForGenreAsync(Guid genreId)
         {
-            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
                 return NotFound();
             }
 
-            var artistsFromDb = _serviceManager.Artist.GetArtists(genreId, false);
+            var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, false);
 
             var artistsDto = _mapper.Map<IEnumerable<ArtistDto>>(artistsFromDb);
             return Ok(artistsDto);
         }
 
         [HttpGet("{id}", Name = "GetArtistForGenre")]
-        public IActionResult GetArtistForGenre(Guid genreId, Guid id)
+        public async Task<IActionResult> GetArtistForGenre(Guid genreId, Guid id)
         {
-            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
                 return NotFound();
             }
 
-            var artistFromDb = _serviceManager.Artist.GetArtist(genreId, id, false);
+            var artistFromDb = await _serviceManager.Artist.GetArtistAsync(genreId, id, false);
             if (artistFromDb == null)
             {
                 _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
@@ -63,7 +64,7 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateArtistForGenre(Guid genreId, [FromBody]ArtistForCreationDto artist)
+        public async Task<IActionResult> CreateArtistForGenre(Guid genreId, [FromBody]ArtistForCreationDto artist)
         {
             if (artist == null)
             {
@@ -77,7 +78,7 @@ namespace OnlineConcertTicketSales.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
                 _logger.LogError($"Genre with id: {genreId} doesn't exist in the database.");
@@ -87,7 +88,7 @@ namespace OnlineConcertTicketSales.Controllers
             var artistEntity = _mapper.Map<Artist>(artist);
             
             _serviceManager.Artist.CreateArtist(genreId, artistEntity);
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             var artistToReturn = _mapper.Map<ArtistDto>(artistEntity);
 
@@ -96,16 +97,16 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteArtistForGenre(Guid genreId, Guid id)
+        public async Task<IActionResult> DeleteArtistForGenre(Guid genreId, Guid id)
         {
-            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
                 return NotFound();
             }
 
-            var artistForGenre = _serviceManager.Artist.GetArtist(genreId, id, false);
+            var artistForGenre = await _serviceManager.Artist.GetArtistAsync(genreId, id, false);
 
             if (artistForGenre == null)
             {
@@ -114,13 +115,13 @@ namespace OnlineConcertTicketSales.Controllers
             }
             
             _serviceManager.Artist.DeleteArtist(artistForGenre);
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateArtistForGenre(Guid genreId, Guid id, [FromBody] ArtistForUpdateDto artist)
+        public async Task<IActionResult> UpdateArtistForGenre(Guid genreId, Guid id, [FromBody] ArtistForUpdateDto artist)
         {
             if (artist == null)
             {
@@ -134,14 +135,14 @@ namespace OnlineConcertTicketSales.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
                 return NotFound();
             }
 
-            var artistEntity = _serviceManager.Artist.GetArtist(genreId, id, true);
+            var artistEntity = await _serviceManager.Artist.GetArtistAsync(genreId, id, true);
             if (artistEntity == null)
             {
                 _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
@@ -149,13 +150,13 @@ namespace OnlineConcertTicketSales.Controllers
             }
 
             _mapper.Map(artist, artistEntity);
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             return NoContent();
         }
 
         [HttpPatch("{id}")]
-        public IActionResult PartiallyUpdateArtistForGenre(Guid genreId, Guid id,
+        public async Task<IActionResult> PartiallyUpdateArtistForGenre(Guid genreId, Guid id,
             [FromBody] JsonPatchDocument<ArtistForUpdateDto> patchDoc)
         {
             if (patchDoc == null)
@@ -164,14 +165,14 @@ namespace OnlineConcertTicketSales.Controllers
                 return BadRequest("patchDoc object is null");
             }
             
-            var genre = _serviceManager.Genre.GetGenre(genreId, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
                 return NotFound();
             }
 
-            var artistEntity = _serviceManager.Artist.GetArtist(genreId, id, true);
+            var artistEntity = await _serviceManager.Artist.GetArtistAsync(genreId, id, true);
             if (artistEntity == null)
             {
                 _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
@@ -192,7 +193,7 @@ namespace OnlineConcertTicketSales.Controllers
 
             _mapper.Map(artistToPatch, artistEntity);
             
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             return NoContent();
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Contracts;
 using Entities.Models.Concerts;
 
@@ -14,14 +15,14 @@ namespace Services
             _repositoryManager = repositoryManager;
         }
 
-        public IEnumerable<Genre> GetAllGenres(bool trackChanges)
+        public async Task<IEnumerable<Genre>> GetAllGenresAsync(bool trackChanges)
         {
-            return _repositoryManager.Genre.GetAllGenres(trackChanges);
+            return await _repositoryManager.Genre.GetAllGenresAsync(trackChanges);
         }
 
-        public Genre GetGenre(Guid genreId, bool trackChanges)
+        public async Task<Genre> GetGenreAsync(Guid genreId, bool trackChanges)
         {
-            return _repositoryManager.Genre.GetGenre(genreId, trackChanges);
+            return await _repositoryManager.Genre.GetGenreAsync(genreId, trackChanges);
         }
 
         public void CreateGenre(Genre genre)
@@ -29,9 +30,9 @@ namespace Services
             _repositoryManager.Genre.CreateGenre(genre);
         }
 
-        public IEnumerable<Genre> GetGenresByIds(IEnumerable<Guid> Ids, bool trackChanges)
+        public async Task<IEnumerable<Genre>> GetGenresByIdsAsync(IEnumerable<Guid> Ids, bool trackChanges)
         {
-            return  _repositoryManager.Genre.GetGenresByIds(Ids, trackChanges);
+            return await _repositoryManager.Genre.GetGenresByIdsAsync(Ids, trackChanges);
         }
 
         public void DeleteGenre(Genre genre)

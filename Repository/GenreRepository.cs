@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models.Concerts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -13,17 +15,17 @@ namespace Repository
         {
         }
 
-        public IEnumerable<Genre> GetAllGenres(bool trackChanges)
+        public async Task<IEnumerable<Genre>> GetAllGenresAsync(bool trackChanges)
         {
-            return FindAll(trackChanges)
+            return await FindAll(trackChanges)
                 .OrderBy(g => g.GenreName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Genre GetGenre(Guid genreId, bool trackChanges)
+        public async Task<Genre> GetGenreAsync(Guid genreId, bool trackChanges)
         {
-            return FindByCondition(g => g.Id.Equals(genreId), trackChanges)
-                .SingleOrDefault();
+            return await FindByCondition(g => g.Id.Equals(genreId), trackChanges)
+                .SingleOrDefaultAsync();
         }
 
         public void CreateGenre(Genre genre)
@@ -31,10 +33,10 @@ namespace Repository
             Create(genre);
         }
 
-        public IEnumerable<Genre> GetGenresByIds(IEnumerable<Guid> Ids, bool trackChanges)
+        public async Task<IEnumerable<Genre>> GetGenresByIdsAsync(IEnumerable<Guid> Ids, bool trackChanges)
         {
-            return FindByCondition(x => Ids.Contains(x.Id), trackChanges)
-                .ToList();
+            return await FindByCondition(x => Ids.Contains(x.Id), trackChanges)
+                .ToListAsync();
         }
 
         public void DeleteGenre(Genre genre)

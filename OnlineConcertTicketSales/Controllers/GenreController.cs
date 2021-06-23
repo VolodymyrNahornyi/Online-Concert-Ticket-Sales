@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
@@ -30,9 +31,9 @@ namespace OnlineConcertTicketSales.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult GetGenres()
+        public async Task<IActionResult> GetGenres()
         {
-            var genres = _serviceManager.Genre.GetAllGenres(false);
+            var genres = await _serviceManager.Genre.GetAllGenresAsync(false);
 
             var genresDto = _mapper.Map<IEnumerable<GenreDto>>(genres);
 
@@ -45,9 +46,9 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="id">Uniq ID for single genre</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GenreById")]
-        public IActionResult GetGenre(Guid id)
+        public async Task<IActionResult> GetGenre(Guid id)
         {
-            var genre = _serviceManager.Genre.GetGenre(id, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(id, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
@@ -66,7 +67,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="genre">Genre For Creation Dto object [FromBody]</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult CreateGenre([FromBody] GenreForCreationDto genre)
+        public async Task<IActionResult> CreateGenre([FromBody] GenreForCreationDto genre)
         {
             if (genre == null)
             {
@@ -83,9 +84,12 @@ namespace OnlineConcertTicketSales.Controllers
             var genreEntity = _mapper.Map<Genre>(genre);
             
             _serviceManager.Genre.CreateGenre(genreEntity);
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             var genreToReturn = _mapper.Map<GenreDto>(genreEntity);
+            
+            // _logger.LogDebug("genreToReturn:");
+            // _logger.LogDebug($"genreToReturn.Id: {genreToReturn.Id}, genreToReturn.GenreName: {genreToReturn.GenreName}");
 
             return CreatedAtRoute("GenreById", new {id = genreToReturn.Id}, genreToReturn);
         }
@@ -96,8 +100,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="Ids">Ids Collection of Genres</param>
         /// <returns></returns>
         [HttpGet("collection/({Ids})", Name = "GenreCollection")]
-        public IActionResult GetGenreCollection([ModelBinder(BinderType = 
-            typeof(ArrayModelBinder))]IEnumerable<Guid> Ids)
+        public async Task<IActionResult> GetGenreCollection([ModelBinder(BinderType = typeof(ArrayModelBinder))]IEnumerable<Guid> Ids)
         {
             if (Ids == null)
             {
@@ -105,7 +108,7 @@ namespace OnlineConcertTicketSales.Controllers
                 return BadRequest("Parameter ids is null");
             }
 
-            var genreEntities = _serviceManager.Genre.GetGenresByIds(Ids, false);
+            var genreEntities = await _serviceManager.Genre.GetGenresByIdsAsync(Ids, false);
 
             if (Ids.Count() != genreEntities.Count())
             {
@@ -123,7 +126,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="genreCollection">Genre Collection [FromBody]</param>
         /// <returns></returns>
         [HttpPost("collection")]
-        public IActionResult CreateGenreCollection([FromBody] IEnumerable<GenreForCreationDto> genreCollection)
+        public async Task<IActionResult> CreateGenreCollection([FromBody] IEnumerable<GenreForCreationDto> genreCollection)
         {
             if (genreCollection == null)
             {
@@ -137,7 +140,7 @@ namespace OnlineConcertTicketSales.Controllers
             {
                 _serviceManager.Genre.CreateGenre(genreEntity);
             }
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             var genreCollectionToReturn = _mapper.Map<IEnumerable<GenreDto>>(genreEntities);
             var ids = string.Join(",", genreCollectionToReturn.Select(c => c.Id));
@@ -146,9 +149,9 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteGenre(Guid id)
+        public async Task<IActionResult> DeleteGenre(Guid id)
         {
-            var genre = _serviceManager.Genre.GetGenre(id, false);
+            var genre = await _serviceManager.Genre.GetGenreAsync(id, false);
             if (genre == null)
             {
                 _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
@@ -156,13 +159,13 @@ namespace OnlineConcertTicketSales.Controllers
             }
             
             _serviceManager.Genre.DeleteGenre(genre);
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateGenre(Guid id, [FromBody]GenreForUpdateDto genre)
+        public async Task<IActionResult> UpdateGenre(Guid id, [FromBody]GenreForUpdateDto genre)
         {
             if (genre == null)
             {
@@ -176,7 +179,7 @@ namespace OnlineConcertTicketSales.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var genreEntity = _serviceManager.Genre.GetGenre(id, true);
+            var genreEntity = await _serviceManager.Genre.GetGenreAsync(id, true);
             if (genreEntity == null)
             {
                 _logger.LogInfo($"Genre with id: {id} doesn't exist in the database.");
@@ -184,7 +187,7 @@ namespace OnlineConcertTicketSales.Controllers
             }
 
             _mapper.Map(genre, genreEntity);
-            _serviceManager.Save();
+            await _serviceManager.SaveAsync();
 
             return NoContent();
         }

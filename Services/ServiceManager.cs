@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using System.Threading.Tasks;
+using Contracts;
 
 namespace Services
 {
@@ -37,9 +38,9 @@ namespace Services
             }
         }
 
-        public void Save()
+        public Task SaveAsync()
         {
-            _repositoryManager.Save();
+            return _repositoryManager.SaveAsync();
         }
     }
 }
