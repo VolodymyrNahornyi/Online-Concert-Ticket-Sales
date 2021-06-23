@@ -49,6 +49,7 @@ namespace OnlineConcertTicketSales
             });
             
             services.AddScoped<ValidationFilterAttribute>();
+            services.AddScoped<ValidateGenreExistsAttribute>();
 
 
             
