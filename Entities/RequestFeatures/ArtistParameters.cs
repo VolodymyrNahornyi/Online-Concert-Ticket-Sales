@@ -1,4 +1,6 @@
-﻿namespace Entities.RequestFeatures
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+namespace Entities.RequestFeatures
 {
     public abstract class RequestParameters
     {
@@ -16,10 +18,17 @@
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+
+        public string OrderBy { get; set; }
     }
     
     public class ArtistParameters : RequestParameters
     {
+        public ArtistParameters()
+        {
+            OrderBy = "artistName";
+        }
+
         public string SearchTerm { get; set; }
     }
 
