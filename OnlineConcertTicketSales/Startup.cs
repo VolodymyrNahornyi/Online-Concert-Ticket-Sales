@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -17,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.Extensions;
+using Repository.DataShaping;
 
 namespace OnlineConcertTicketSales
 {
@@ -51,6 +53,8 @@ namespace OnlineConcertTicketSales
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateGenreExistsAttribute>();
             services.AddScoped<ValidateArtistForGenreExistsAttribute>();
+
+            services.AddScoped<IDataShaper<ArtistDto>, DataShaper<ArtistDto>>();
 
 
             
