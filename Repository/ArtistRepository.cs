@@ -21,7 +21,7 @@ namespace Repository
         {
             var artist = await FindByCondition(a => a.GenreId.Equals(genreId), trackChanges)
                 .Search(artistParameters.SearchTerm) //IQuaryable extended method to search Artist by SearchTerm
-                .OrderBy(a => a.ArtistName)
+                .Sort(artistParameters.OrderBy)
                 .ToListAsync();
 
             return PagedList<Artist>.ToPagedList(artist, artistParameters.PageNumber, artistParameters.PageSize);
