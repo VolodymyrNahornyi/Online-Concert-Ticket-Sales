@@ -16,7 +16,7 @@ namespace Services
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
+        public async Task<PagedList<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
         {
             return await _repositoryManager.Artist.GetArtistsAsync(genreId, artistParameters, trackChanges);
         }

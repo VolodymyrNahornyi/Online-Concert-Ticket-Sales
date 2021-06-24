@@ -7,6 +7,7 @@ using Entities;
 using Entities.Models.Concerts;
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extensions;
 
 namespace Repository
 {
@@ -16,13 +17,14 @@ namespace Repository
         {
         }
 
-        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
+        public async Task<PagedList<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
         {
-            return await FindByCondition(a => a.GenreId.Equals(genreId), trackChanges)
+            var artist = await FindByCondition(a => a.GenreId.Equals(genreId), trackChanges)
+                .Search(artistParameters.SearchTerm) //IQuaryable extended method to search Artist by SearchTerm
                 .OrderBy(a => a.ArtistName)
-                .Skip((artistParameters.PageNumber - 1) * artistParameters.PageSize)
-                .Take(artistParameters.PageSize)
                 .ToListAsync();
+
+            return PagedList<Artist>.ToPagedList(artist, artistParameters.PageNumber, artistParameters.PageSize);
         }
 
         public async Task<Artist> GetArtistAsync(Guid genreId, Guid id, bool trackChanges)

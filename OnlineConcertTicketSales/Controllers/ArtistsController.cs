@@ -8,6 +8,7 @@ using Entities.Models.Concerts;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OnlineConcertTicketSales.ActionFilters;
 
 namespace OnlineConcertTicketSales.Controllers
@@ -39,6 +40,9 @@ namespace OnlineConcertTicketSales.Controllers
 
             var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, employeeParameters, false);
 
+            //Add Pagination MetaData to the Response
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(artistsFromDb.MetaData));
+            
             var artistsDto = _mapper.Map<IEnumerable<ArtistDto>>(artistsFromDb);
             return Ok(artistsDto);
         }
