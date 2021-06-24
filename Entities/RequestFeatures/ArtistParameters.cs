@@ -20,6 +20,7 @@ namespace Entities.RequestFeatures
         }
 
         public string OrderBy { get; set; }
+        public string Fields { get; set; }
     }
     
     public class ArtistParameters : RequestParameters
@@ -30,6 +31,7 @@ namespace Entities.RequestFeatures
         }
 
         public string SearchTerm { get; set; }
+        
     }
 
 }
