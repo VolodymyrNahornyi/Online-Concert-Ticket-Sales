@@ -19,7 +19,8 @@
     }
     
     public class ArtistParameters : RequestParameters
-    { 
+    {
+        public string SearchTerm { get; set; }
     }
 
 }
