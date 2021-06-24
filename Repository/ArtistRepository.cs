@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models.Concerts;
+using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository
@@ -15,10 +16,12 @@ namespace Repository
         {
         }
 
-        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, bool trackChanges)
+        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
         {
             return await FindByCondition(a => a.GenreId.Equals(genreId), trackChanges)
                 .OrderBy(a => a.ArtistName)
+                .Skip((artistParameters.PageNumber - 1) * artistParameters.PageSize)
+                .Take(artistParameters.PageSize)
                 .ToListAsync();
         }
 

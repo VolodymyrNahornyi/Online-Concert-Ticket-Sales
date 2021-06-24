@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts;
 using Entities.Models.Concerts;
+using Entities.RequestFeatures;
 
 namespace Services
 {
@@ -15,9 +16,9 @@ namespace Services
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, bool trackChanges)
+        public async Task<IEnumerable<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
         {
-            return await _repositoryManager.Artist.GetArtistsAsync(genreId, trackChanges);
+            return await _repositoryManager.Artist.GetArtistsAsync(genreId, artistParameters, trackChanges);
         }
 
         public async Task<Artist> GetArtistAsync(Guid genreId, Guid id, bool trackChanges)

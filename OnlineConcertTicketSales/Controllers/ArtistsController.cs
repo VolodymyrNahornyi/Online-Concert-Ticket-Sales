@@ -5,6 +5,7 @@ using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using OnlineConcertTicketSales.ActionFilters;
@@ -27,7 +28,7 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetArtistsForGenreAsync(Guid genreId)
+        public async Task<IActionResult> GetArtistsForGenreAsync(Guid genreId, [FromQuery] ArtistParameters employeeParameters)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
@@ -36,7 +37,7 @@ namespace OnlineConcertTicketSales.Controllers
                 return NotFound();
             }
 
-            var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, false);
+            var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, employeeParameters, false);
 
             var artistsDto = _mapper.Map<IEnumerable<ArtistDto>>(artistsFromDb);
             return Ok(artistsDto);
