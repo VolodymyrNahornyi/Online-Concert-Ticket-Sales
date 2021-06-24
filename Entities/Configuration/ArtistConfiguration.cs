@@ -48,6 +48,54 @@ namespace Entities.Configuration
                     ArtistName = "Led Zeppelin",
                     GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
                 },
+                new Artist
+                {
+                    Id = new Guid("e53ee28f-fc14-4c08-919b-bdeb0f61f865"),
+                    ArtistName = "Guns N' Roses",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("16782e08-7f54-41fa-b3ae-1adc34aa3edd"),
+                    ArtistName = "Fleetwood Mac",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("bdf2bba3-a4a9-406f-a4b2-231bd2d3ee5f"),
+                    ArtistName = "Creedence Clearwater Revival",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("d604fae1-6a79-463d-956c-09fcfb59a769"),
+                    ArtistName = "Journey",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("296f7e3a-203e-4617-9c34-71f12bdb467e"),
+                    ArtistName = "Lynyrd Skynyrd",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("9b9e2426-46d0-44a5-9e71-fb73fecad422"),
+                    ArtistName = "U2",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("0f3e2eba-8226-4a9c-88e3-ddda16ee5f0d"),
+                    ArtistName = "Aerosmith",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
+                new Artist
+                {
+                    Id = new Guid("d4c23fa3-292b-4faa-8fc0-21458aebfd17"),
+                    ArtistName = "Eagles",
+                    GenreId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870")
+                },
                 //Juzz Artists
                 new Artist
                 {
