@@ -66,6 +66,9 @@ namespace OnlineConcertTicketSales
                 .AddXmlDataContractSerializerFormatters()
                 .AddCustomCSVFormatter();
             
+            //HATEOAS JSON or XML media types
+            services.AddCustomMediaTypes();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "OnlineConcertTicketSales", Version = "v1"});
