@@ -20,12 +20,14 @@ namespace OnlineConcertTicketSales.Controllers
         private readonly IServiceManager _serviceManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly IDataShaper<ArtistDto> _dataShaper;
 
-        public ArtistsController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper)
+        public ArtistsController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper, IDataShaper<ArtistDto> dataShaper)
         {
             _serviceManager = serviceManager;
             _logger = loggerManager;
             _mapper = mapper;
+            _dataShaper = dataShaper;
         }
 
         [HttpGet]
@@ -44,11 +46,12 @@ namespace OnlineConcertTicketSales.Controllers
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(artistsFromDb.MetaData));
             
             var artistsDto = _mapper.Map<IEnumerable<ArtistDto>>(artistsFromDb);
-            return Ok(artistsDto);
+            
+            return Ok(_dataShaper.ShapeData(artistsDto, employeeParameters.Fields));
         }
 
         [HttpGet("{id}", Name = "GetArtistForGenre")]
-        public async Task<IActionResult> GetArtistForGenre(Guid genreId, Guid id)
+        public async Task<IActionResult> GetArtistForGenre(Guid genreId, Guid id, [FromQuery] ArtistParameters employeeParameters)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
@@ -66,7 +69,7 @@ namespace OnlineConcertTicketSales.Controllers
 
             var artistDto = _mapper.Map<ArtistDto>(artistFromDb);
 
-            return Ok(artistDto);
+            return Ok(_dataShaper.ShapeData(artistDto, employeeParameters.Fields));
         }
 
         [HttpPost]
