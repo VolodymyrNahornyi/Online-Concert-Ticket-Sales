@@ -57,10 +57,12 @@ namespace OnlineConcertTicketSales
             
 
             services.AddScoped<IDataShaper<ArtistDto>, DataShaper<ArtistDto>>();
+            services.AddScoped<IDataShaper<GenreDto>, DataShaper<GenreDto>>();
 
             services.AddScoped<ValidateMediaTypeAttribute>();
             
             services.AddScoped<ArtistLinks>();
+            services.AddScoped<GenreLinks>();
             
             services.AddControllers(config =>
             {

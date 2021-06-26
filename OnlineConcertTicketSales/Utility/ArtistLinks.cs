@@ -56,8 +56,8 @@ namespace OnlineConcertTicketSales.Utility
                     artistsDtoList[index].Id, fields);
                 shapedArtists[index].Add("Links", artistLinks);
             }
-            var employeeCollection = new LinkCollectionWrapper<Entity>(shapedArtists);
-            var linkedEmployees = CreateLinksForArtists(httpContext, employeeCollection);
+            var artistCollection = new LinkCollectionWrapper<Entity>(shapedArtists);
+            var linkedEmployees = CreateLinksForArtists(httpContext, artistCollection);
             return new LinkResponse { HasLinks = true, LinkedEntities = linkedEmployees };
         }
         

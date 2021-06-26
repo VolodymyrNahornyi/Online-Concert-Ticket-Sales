@@ -6,9 +6,11 @@ using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
 using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.ModelBinders;
+using OnlineConcertTicketSales.Utility;
 
 namespace OnlineConcertTicketSales.Controllers
 {
@@ -19,12 +21,14 @@ namespace OnlineConcertTicketSales.Controllers
         private readonly IServiceManager _serviceManager;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly GenreLinks _genreLinks;
 
-        public GenreController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper)
+        public GenreController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper, GenreLinks genreLinks)
         {
             _serviceManager = serviceManager;
             _logger = loggerManager;
             _mapper = mapper;
+            _genreLinks = genreLinks;
         }
 
         /// <summary>
@@ -32,13 +36,16 @@ namespace OnlineConcertTicketSales.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetGenres()
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        public async Task<IActionResult> GetGenres([FromQuery] GenreParameters genreParameters)
         {
             var genres = await _serviceManager.Genre.GetAllGenresAsync(false);
 
             var genresDto = _mapper.Map<IEnumerable<GenreDto>>(genres);
-
-            return Ok(genresDto);
+            
+            var links = _genreLinks.TryGenerateLinks(genresDto, genreParameters.Fields, HttpContext);
+            
+            return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
         }
 
         /// <summary>
