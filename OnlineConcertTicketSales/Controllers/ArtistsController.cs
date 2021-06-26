@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OnlineConcertTicketSales.ActionFilters;
+using OnlineConcertTicketSales.Utility;
 
 namespace OnlineConcertTicketSales.Controllers
 {
@@ -21,17 +22,21 @@ namespace OnlineConcertTicketSales.Controllers
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
         private readonly IDataShaper<ArtistDto> _dataShaper;
+        private readonly ArtistLinks _artistLinks;
 
-        public ArtistsController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper, IDataShaper<ArtistDto> dataShaper)
+        public ArtistsController(IServiceManager serviceManager, ILoggerManager loggerManager, IMapper mapper, IDataShaper<ArtistDto> dataShaper,
+            ArtistLinks artistLinks)
         {
             _serviceManager = serviceManager;
             _logger = loggerManager;
             _mapper = mapper;
             _dataShaper = dataShaper;
+            _artistLinks = artistLinks;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetArtistsForGenreAsync(Guid genreId, [FromQuery] ArtistParameters employeeParameters)
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        public async Task<IActionResult> GetArtistsForGenreAsync(Guid genreId, [FromQuery] ArtistParameters artistParameters)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
@@ -40,18 +45,21 @@ namespace OnlineConcertTicketSales.Controllers
                 return NotFound();
             }
 
-            var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, employeeParameters, false);
+            var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, artistParameters, false);
 
             //Add Pagination MetaData to the Response
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(artistsFromDb.MetaData));
             
             var artistsDto = _mapper.Map<IEnumerable<ArtistDto>>(artistsFromDb);
             
-            return Ok(_dataShaper.ShapeData(artistsDto, employeeParameters.Fields));
+            var links = _artistLinks.TryGenerateLinks(artistsDto, artistParameters.Fields,
+                genreId, HttpContext);
+            
+            return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
         }
 
         [HttpGet("{id}", Name = "GetArtistForGenre")]
-        public async Task<IActionResult> GetArtistForGenre(Guid genreId, Guid id, [FromQuery] ArtistParameters employeeParameters)
+        public async Task<IActionResult> GetArtistForGenre(Guid genreId, Guid id, [FromQuery] ArtistParameters artistParameters)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
@@ -69,7 +77,7 @@ namespace OnlineConcertTicketSales.Controllers
 
             var artistDto = _mapper.Map<ArtistDto>(artistFromDb);
 
-            return Ok(_dataShaper.ShapeData(artistDto, employeeParameters.Fields));
+            return Ok(_dataShaper.ShapeData(artistDto, artistParameters.Fields));
         }
 
         [HttpPost]
