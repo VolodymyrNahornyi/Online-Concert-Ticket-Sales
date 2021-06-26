@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.Extensions;
+using OnlineConcertTicketSales.Utility;
 using Repository.DataShaping;
 
 namespace OnlineConcertTicketSales
@@ -58,10 +59,8 @@ namespace OnlineConcertTicketSales
             services.AddScoped<IDataShaper<ArtistDto>, DataShaper<ArtistDto>>();
 
             services.AddScoped<ValidateMediaTypeAttribute>();
-
-            services.AddScoped<IDataShaper<ArtistDto>, DataShaper<ArtistDto>>();
-
-
+            
+            services.AddScoped<ArtistLinks>();
             
             services.AddControllers(config =>
             {
