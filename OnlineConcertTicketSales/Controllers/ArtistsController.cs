@@ -35,6 +35,7 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpGet]
+        [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetArtistsForGenreAsync(Guid genreId, [FromQuery] ArtistParameters artistParameters)
         {
