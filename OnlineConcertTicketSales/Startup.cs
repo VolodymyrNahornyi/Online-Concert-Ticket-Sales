@@ -73,6 +73,7 @@ namespace OnlineConcertTicketSales
                 .AddCustomCSVFormatter();
             
             //HATEOAS JSON or XML media types
+            //APIRoot JSON or XML media types
             services.AddCustomMediaTypes();
 
             services.AddSwaggerGen(c =>

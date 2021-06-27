@@ -35,7 +35,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// Get All Genres
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet(Name = "GetGenres")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetGenres([FromQuery] GenreParameters genreParameters)
         {
@@ -82,7 +82,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// </summary>
         /// <param name="genre">Genre For Creation Dto object [FromBody]</param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost(Name = "CreateGenre")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateGenre([FromBody] GenreForCreationDto genre)
         {
@@ -174,6 +174,7 @@ namespace OnlineConcertTicketSales.Controllers
 
             return NoContent();
         }
+        
         
     }
 }

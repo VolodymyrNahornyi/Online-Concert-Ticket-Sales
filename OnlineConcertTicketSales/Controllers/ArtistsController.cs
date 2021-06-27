@@ -60,6 +60,7 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpGet("{id}", Name = "GetArtistForGenre")]
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetArtistForGenre(Guid genreId, Guid id, [FromQuery] ArtistParameters artistParameters)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
@@ -82,7 +83,6 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateArtistForGenre(Guid genreId, [FromBody]ArtistForCreationDto artist)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);

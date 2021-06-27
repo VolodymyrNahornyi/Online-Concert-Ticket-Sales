@@ -60,6 +60,9 @@ namespace OnlineConcertTicketSales.Extensions
                     newtonsoftJsonOutputFormatter
                         .SupportedMediaTypes
                         .Add("application/vnd.dom.hateoas+json");
+                    newtonsoftJsonOutputFormatter
+                        .SupportedMediaTypes
+                        .Add("application/vnd.dom.apiroot+json");
                 }
                 var xmlOutputFormatter = config.OutputFormatters 
                     .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
@@ -68,6 +71,9 @@ namespace OnlineConcertTicketSales.Extensions
                     xmlOutputFormatter
                         .SupportedMediaTypes
                         .Add("application/vnd.dom.hateoas+xml");
+                    xmlOutputFormatter
+                        .SupportedMediaTypes
+                        .Add("application/vnd.dom.apiroot+xml");
                 }
             });
         }
