@@ -48,6 +48,14 @@ namespace OnlineConcertTicketSales.Controllers
             return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
         }
 
+        [HttpOptions]
+        public IActionResult GetGenresOptions()
+        {
+            Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+
+            return Ok();
+        }
+
         /// <summary>
         /// Get Genre By Id
         /// </summary>
