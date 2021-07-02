@@ -15,6 +15,7 @@ namespace Services
 
         private IGenreService _genreService;
         private IArtistService _artistService;
+        private IConcertService _concertService;
 
         public IGenreService Genre
         {
@@ -35,6 +36,17 @@ namespace Services
                     _artistService = new ArtistService(_repositoryManager);
 
                 return _artistService;
+            }
+        }
+        
+        public IConcertService Concert
+        {
+            get
+            {
+                if (_concertService == null)
+                    _concertService = new ConcertService(_repositoryManager);
+
+                return _concertService;
             }
         }
 

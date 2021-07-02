@@ -6,6 +6,7 @@ namespace Contracts
     {
         IGenreService Genre { get; }
         IArtistService Artist { get; }
+        IConcertService Concert { get; }
         Task SaveAsync();
     }
 }
