@@ -10,6 +10,7 @@ namespace Repository
 
         private IGenreRepository _genreRepository;
         private IArtistRepository _artistRepository;
+        private IConcertRepository _concertRepository;
 
         public RepositoryManager(RepositoryContext repositoryContext)
         {
@@ -35,6 +36,17 @@ namespace Repository
                     _artistRepository = new ArtistRepository(_repositoryContext);
 
                 return _artistRepository;
+            }
+        }
+        
+        public IConcertRepository Concert
+        {
+            get
+            {
+                if (_concertRepository == null)
+                    _concertRepository = new ConcertRepository(_repositoryContext);
+
+                return _concertRepository;
             }
         }
 

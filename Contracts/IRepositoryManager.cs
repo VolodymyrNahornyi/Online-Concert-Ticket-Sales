@@ -6,6 +6,7 @@ namespace Contracts
     {
         IGenreRepository Genre { get; }
         IArtistRepository Artist { get; }
+        IConcertRepository Concert { get; }
         Task SaveAsync();
     }
 }
