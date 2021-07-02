@@ -14,6 +14,8 @@ namespace OnlineConcertTicketSales
             CreateMap<ArtistForCreationDto, Artist>();
             CreateMap<ArtistForUpdateDto, Artist>().ReverseMap();
             CreateMap<GenreForUpdateDto, Genre>();
+            
+            CreateMap<Concert, ConcertDto>();
         }
     }
 }
