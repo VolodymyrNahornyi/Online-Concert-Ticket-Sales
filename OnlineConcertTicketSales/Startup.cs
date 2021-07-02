@@ -63,7 +63,6 @@ namespace OnlineConcertTicketSales
             
             services.AddScoped<ArtistLinks>();
             services.AddScoped<GenreLinks>();
-            services.ConfigureVersioning();
             
             services.AddControllers(config =>
             {
