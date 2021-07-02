@@ -4,14 +4,16 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace OnlineConcertTicketSales.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20210702164857_InitialConcertData")]
+    partial class InitialConcertData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,100 +187,7 @@ namespace OnlineConcertTicketSales.Migrations
 
                     b.HasIndex("ArtistId");
 
-                    b.ToTable("Concerts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("9637b59a-65e6-4049-8ace-5dfc70a79593"),
-                            ArtistId = new Guid("cea51056-4180-45e6-9007-b92b2c4e806a"),
-                            ConcertName = "The Beatles at Apple Corps Rooftop",
-                            Date = new DateTime(2021, 2, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(8868)
-                        },
-                        new
-                        {
-                            Id = new Guid("9f0b0daf-70aa-4a9e-bd89-70adf5351655"),
-                            ArtistId = new Guid("cea51056-4180-45e6-9007-b92b2c4e806a"),
-                            ConcertName = "The Beatles at Twickenham Studios",
-                            Date = new DateTime(2021, 3, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9134)
-                        },
-                        new
-                        {
-                            Id = new Guid("ccc3968c-5418-4df6-a8cb-eedb803f9ab3"),
-                            ArtistId = new Guid("cea51056-4180-45e6-9007-b92b2c4e806a"),
-                            ConcertName = "The Beatles at EMI Recording Studios",
-                            Date = new DateTime(2021, 4, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9147)
-                        },
-                        new
-                        {
-                            Id = new Guid("c9fdbce2-b8f4-4d9e-a319-c805590beebc"),
-                            ArtistId = new Guid("cea51056-4180-45e6-9007-b92b2c4e806a"),
-                            ConcertName = "The Beatles at Candlestick Park",
-                            Date = new DateTime(2021, 6, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9151)
-                        },
-                        new
-                        {
-                            Id = new Guid("b2415bc2-1137-4a79-80ac-ad1be8721e42"),
-                            ArtistId = new Guid("cea51056-4180-45e6-9007-b92b2c4e806a"),
-                            ConcertName = "The Beatles at Seattle Center Coliseum",
-                            Date = new DateTime(2021, 8, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9156)
-                        },
-                        new
-                        {
-                            Id = new Guid("6a972a13-c1dc-4322-894e-e6103bbdc620"),
-                            ArtistId = new Guid("cea51056-4180-45e6-9007-b92b2c4e806a"),
-                            ConcertName = "The Beatles at Shea Stadium",
-                            Date = new DateTime(2021, 9, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9161)
-                        },
-                        new
-                        {
-                            Id = new Guid("ec19f4c0-5682-4941-8eb4-71475744610c"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "Early shows",
-                            Date = new DateTime(2021, 4, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9166)
-                        },
-                        new
-                        {
-                            Id = new Guid("73ae9a23-7f86-4088-b37c-1b6f569edce2"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "Queen I",
-                            Date = new DateTime(2021, 5, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9170)
-                        },
-                        new
-                        {
-                            Id = new Guid("3e55eb93-e228-4d90-87ad-3341b15760c9"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "Queen II",
-                            Date = new DateTime(2021, 6, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9175)
-                        },
-                        new
-                        {
-                            Id = new Guid("d8ef04df-052b-417e-8812-3f45986c9c14"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "Sheer Heart Attack",
-                            Date = new DateTime(2021, 7, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9180)
-                        },
-                        new
-                        {
-                            Id = new Guid("9abedbd5-7407-46fd-a09e-070353a576a3"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "A Night At The Opera",
-                            Date = new DateTime(2021, 8, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9184)
-                        },
-                        new
-                        {
-                            Id = new Guid("ba4345df-2828-4f1e-b040-380ee65bdc54"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "Day At The Races",
-                            Date = new DateTime(2021, 9, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9189)
-                        },
-                        new
-                        {
-                            Id = new Guid("ed232607-0b60-42e5-b7fc-a4ceb2502a16"),
-                            ArtistId = new Guid("f32cba10-8b39-430b-904e-1013ce10bd7e"),
-                            ConcertName = "News Of The World",
-                            Date = new DateTime(2021, 10, 2, 20, 4, 25, 582, DateTimeKind.Local).AddTicks(9193)
-                        });
+                    b.ToTable("Concert");
                 });
 
             modelBuilder.Entity("Entities.Models.Concerts.Genre", b =>
