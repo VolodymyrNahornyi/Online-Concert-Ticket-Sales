@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,5 +17,7 @@ namespace Entities.Models.Concerts
         [ForeignKey(nameof(Genre))]
         public Guid GenreId { get; set; }
         public Genre Genre { get; set; }
+        
+        public ICollection<Concert> Concerts { get; set; }
     }
 }
