@@ -32,5 +32,11 @@ namespace Repository
                                               && c.ArtistId.Equals(artistId) && c.Id.Equals(id), trackChanges)
                 .SingleOrDefaultAsync();
         }
+
+        public void CreateConcert(Guid artistId, Concert concert)
+        {
+            concert.ArtistId = artistId;
+            Create(concert);
+        }
     }
 }
