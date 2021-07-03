@@ -35,7 +35,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="genreId">Genre's Id</param>
         /// <param name="artistId">Artist's Id</param>
         /// <param name="concertParameters">Concert's Request parameter</param>
-        /// <returns></returns>
+        /// <returns>Response status 200 Ok</returns>
         [HttpGet]
         [HttpHead]
         public async Task<IActionResult> GetConcertsForArtistForGenreAsync(Guid genreId, Guid artistId, [FromQuery] ConcertParameters concertParameters)
@@ -64,5 +64,43 @@ namespace OnlineConcertTicketSales.Controllers
 
             return Ok(concertDto);
         }
+
+        /// <summary>
+        /// Get Single concert for single artist for concrete genre
+        /// </summary>
+        /// <param name="genreId">Genre's Id</param>
+        /// <param name="artistId">Artist's Id</param>
+        /// <param name="id">Concert's Id</param>
+        /// <returns>Response status 200 Ok</returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id)
+        {
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            var artist = await _serviceManager.Artist.GetArtistAsync(genreId, artistId, false);
+            if (artist == null)
+            {
+                _logger.LogInfo($"Artist with id: {artistId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var concertFromDb = await _serviceManager.Concert.GetConcertAsync(genreId, artistId, id, false);
+            if (concertFromDb == null)
+            {
+                _logger.LogInfo($"Concert with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var concertDto = _mapper.Map<ConcertDto>(concertFromDb);
+
+            return Ok(concertDto);
+        }
+        
+        
     }
 }
