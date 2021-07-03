@@ -72,7 +72,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="artistId">Artist's Id</param>
         /// <param name="id">Concert's Id</param>
         /// <returns>Response status 200 Ok</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetConcertForArtistForGenre")]
         public async Task<IActionResult> GetConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
@@ -100,7 +100,40 @@ namespace OnlineConcertTicketSales.Controllers
 
             return Ok(concertDto);
         }
-        
+
+
+        /// <summary>
+        /// Create New Concert for concrete artist and concrete genre
+        /// </summary>
+        /// <param name="genreId">Genre's Id</param>
+        /// <param name="artistId">Artist's Id</param>
+        /// <param name="concert">Concert object</param>
+        /// <returns>Response status 201 Ok. New Concert object</returns>
+        [HttpPost]
+        public async Task<IActionResult> CreateConcertForArtistForGenre(Guid genreId, Guid artistId, [FromBody] ConcertForCreationDto concert)
+        {
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            var artist = await _serviceManager.Artist.GetArtistAsync(genreId, artistId, false);
+            if (artist == null)
+            {
+                _logger.LogInfo($"Artist with id: {artistId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var concertEntity = _mapper.Map<Concert>(concert);
+            _serviceManager.Concert.CreateConcert(artistId, concertEntity);
+            await _serviceManager.SaveAsync();
+
+            var concertToReturn = _mapper.Map<ConcertDto>(concertEntity);
+            
+            return CreatedAtRoute("GetConcertForArtistForGenre", new {genreId, artistId, id = concertToReturn.Id}, concertToReturn);
+        }
         
     }
 }
