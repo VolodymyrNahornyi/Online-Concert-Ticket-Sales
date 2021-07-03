@@ -16,6 +16,7 @@ namespace OnlineConcertTicketSales
             CreateMap<GenreForUpdateDto, Genre>();
             
             CreateMap<Concert, ConcertDto>();
+            CreateMap<ConcertForCreationDto, Concert>();
         }
     }
 }
