@@ -20,5 +20,10 @@ namespace Services
         {
             return await _repositoryManager.Concert.GetConcertsAsync(genreId, artistId, concertParameters, trackChanges);
         }
+
+        public async Task<Concert> GetConcertAsync(Guid genreId, Guid artistId, Guid id, bool trackChanges)
+        {
+            return await _repositoryManager.Concert.GetConcertAsync(genreId, artistId, id, trackChanges);
+        }
     }
 }
