@@ -30,5 +30,10 @@ namespace Services
         {
             _repositoryManager.Concert.CreateConcert(artistId, concert);
         }
+
+        public void DeleteConcert(Concert concert)
+        {
+            _repositoryManager.Concert.DeleteConcert(concert);
+        }
     }
 }
