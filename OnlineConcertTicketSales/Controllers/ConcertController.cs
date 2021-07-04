@@ -111,6 +111,12 @@ namespace OnlineConcertTicketSales.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateConcertForArtistForGenre(Guid genreId, Guid artistId, [FromBody] ConcertForCreationDto concert)
         {
+            if(concert == null) 
+            { 
+                _logger.LogError("ConcertForCreationDto object sent from client is null."); 
+                return BadRequest("ConcertForCreationDto object is null"); 
+            }
+            
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
