@@ -38,5 +38,10 @@ namespace Repository
             concert.ArtistId = artistId;
             Create(concert);
         }
+
+        public void DeleteConcert(Concert concert)
+        {
+            Delete(concert);
+        }
     }
 }

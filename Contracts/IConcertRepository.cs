@@ -11,5 +11,6 @@ namespace Contracts
         Task<PagedList<Concert>> GetConcertsAsync(Guid genreId, Guid artistId, ConcertParameters concertParameters, bool trackChanges);
         Task<Concert> GetConcertAsync(Guid genreId, Guid artistId, Guid id, bool trackChanges);
         void CreateConcert(Guid artistId, Concert concert);
+        void DeleteConcert(Concert concert);
     }
 }
