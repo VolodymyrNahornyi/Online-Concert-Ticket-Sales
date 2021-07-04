@@ -101,7 +101,6 @@ namespace OnlineConcertTicketSales.Controllers
             return Ok(concertDto);
         }
 
-
         /// <summary>
         /// Create New Concert for concrete artist and concrete genre
         /// </summary>
@@ -133,6 +132,43 @@ namespace OnlineConcertTicketSales.Controllers
             var concertToReturn = _mapper.Map<ConcertDto>(concertEntity);
             
             return CreatedAtRoute("GetConcertForArtistForGenre", new {genreId, artistId, id = concertToReturn.Id}, concertToReturn);
+        }
+
+        /// <summary>
+        /// Delete Single concert for single artist for concrete genre
+        /// </summary>
+        /// <param name="genreId">Genre's Id</param>
+        /// <param name="artistId">Artist's Id</param>
+        /// <param name="id">Concert's Id</param>
+        /// <returns>Response status 204 NoContent</returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id)
+        {
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            var artist = await _serviceManager.Artist.GetArtistAsync(genreId, artistId, false);
+            if (artist == null)
+            {
+                _logger.LogInfo($"Artist with id: {artistId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var concertForArtistForGenre = await _serviceManager.Concert.GetConcertAsync(genreId, artistId, id, false);
+            if (concertForArtistForGenre == null)
+            {
+                _logger.LogInfo($"Concert with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            _serviceManager.Concert.DeleteConcert(concertForArtistForGenre);
+            await _serviceManager.SaveAsync();
+
+            return NoContent();
         }
         
     }
