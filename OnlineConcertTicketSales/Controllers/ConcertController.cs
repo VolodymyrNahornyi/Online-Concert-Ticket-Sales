@@ -177,6 +177,14 @@ namespace OnlineConcertTicketSales.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Full Update the Concert object by Id 
+        /// </summary>
+        /// <param name="genreId">Genre's Id</param>
+        /// <param name="artistId">Artist's Id</param>
+        /// <param name="id">Concert's Id</param>
+        /// <param name="concert">Update Concert object</param>
+        /// <returns>Response 204 NoContent</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id,
             [FromBody] ConcertForUpdateDto concert)
