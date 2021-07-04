@@ -170,6 +170,43 @@ namespace OnlineConcertTicketSales.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id,
+            [FromBody] ConcertForUpdateDto concert)
+        {
+            if(concert == null) 
+            { 
+                _logger.LogError("ConcertForUpdateDto object sent from client is null."); 
+                return BadRequest("ConcertForUpdateDto object is null"); 
+            }
+            
+            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
+            if (genre == null)
+            {
+                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
+                return NotFound();
+            }
+            
+            var artist = await _serviceManager.Artist.GetArtistAsync(genreId, artistId, false);
+            if (artist == null)
+            {
+                _logger.LogInfo($"Artist with id: {artistId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var concertEntity = await _serviceManager.Concert.GetConcertAsync(genreId, artistId, id, true);
+            if (concertEntity == null)
+            {
+                _logger.LogInfo($"Concert with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _mapper.Map(concert, concertEntity);
+            _serviceManager.SaveAsync();
+
+            return NoContent();
+        }
         
     }
 }
