@@ -54,7 +54,7 @@ namespace OnlineConcertTicketSales
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateGenreExistsAttribute>();
             services.AddScoped<ValidateArtistForGenreExistsAttribute>();
-            
+            services.AddScoped<ValidateConcertForArtistForGenreExistsAttribute>();
 
             services.AddScoped<IDataShaper<ArtistDto>, DataShaper<ArtistDto>>();
             services.AddScoped<IDataShaper<GenreDto>, DataShaper<GenreDto>>();
