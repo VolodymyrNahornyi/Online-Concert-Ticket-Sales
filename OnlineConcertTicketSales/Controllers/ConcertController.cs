@@ -108,15 +108,10 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="artistId">Artist's Id</param>
         /// <param name="concert">Concert object</param>
         /// <returns>Response status 201 Ok. New Concert object</returns>
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost]
         public async Task<IActionResult> CreateConcertForArtistForGenre(Guid genreId, Guid artistId, [FromBody] ConcertForCreationDto concert)
         {
-            if(concert == null) 
-            { 
-                _logger.LogError("ConcertForCreationDto object sent from client is null."); 
-                return BadRequest("ConcertForCreationDto object is null"); 
-            }
-            
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
@@ -186,15 +181,10 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="concert">Update Concert object</param>
         /// <returns>Response 204 NoContent</returns>
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id,
             [FromBody] ConcertForUpdateDto concert)
         {
-            if(concert == null) 
-            { 
-                _logger.LogError("ConcertForUpdateDto object sent from client is null."); 
-                return BadRequest("ConcertForUpdateDto object is null"); 
-            }
-            
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
