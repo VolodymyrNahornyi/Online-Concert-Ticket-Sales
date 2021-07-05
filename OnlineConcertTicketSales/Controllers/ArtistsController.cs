@@ -83,7 +83,8 @@ namespace OnlineConcertTicketSales.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateArtistForGenre(Guid genreId, [FromBody]ArtistForCreationDto artist)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> CreateArtistForGenre(Guid genreId, [FromBody] ArtistForCreationDto artist)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
