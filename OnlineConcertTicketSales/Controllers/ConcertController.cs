@@ -143,28 +143,10 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="id">Concert's Id</param>
         /// <returns>Response status 204 NoContent</returns>
         [HttpDelete("{id}")]
+        [ServiceFilter(typeof(ValidateConcertForArtistForGenreExistsAttribute))]
         public async Task<IActionResult> DeleteConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id)
         {
-            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
-            if (genre == null)
-            {
-                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
-                return NotFound();
-            }
-            
-            var artist = await _serviceManager.Artist.GetArtistAsync(genreId, artistId, false);
-            if (artist == null)
-            {
-                _logger.LogInfo($"Artist with id: {artistId} doesn't exist in the database.");
-                return NotFound();
-            }
-
-            var concertForArtistForGenre = await _serviceManager.Concert.GetConcertAsync(genreId, artistId, id, false);
-            if (concertForArtistForGenre == null)
-            {
-                _logger.LogInfo($"Concert with id: {id} doesn't exist in the database.");
-                return NotFound();
-            }
+            var concertForArtistForGenre = HttpContext.Items["concertForArtistForGenre"] as Concert;
             
             _serviceManager.Concert.DeleteConcert(concertForArtistForGenre);
             await _serviceManager.SaveAsync();
@@ -180,32 +162,13 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="id">Concert's Id</param>
         /// <param name="concert">Update Concert object</param>
         /// <returns>Response 204 NoContent</returns>
-        [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateConcertForArtistForGenreExistsAttribute))]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id,
             [FromBody] ConcertForUpdateDto concert)
         {
-            var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
-            if (genre == null)
-            {
-                _logger.LogInfo($"Genre with id: {genreId} doesn't exist in the database.");
-                return NotFound();
-            }
-            
-            var artist = await _serviceManager.Artist.GetArtistAsync(genreId, artistId, false);
-            if (artist == null)
-            {
-                _logger.LogInfo($"Artist with id: {artistId} doesn't exist in the database.");
-                return NotFound();
-            }
-
-            var concertEntity = await _serviceManager.Concert.GetConcertAsync(genreId, artistId, id, true);
-            if (concertEntity == null)
-            {
-                _logger.LogInfo($"Concert with id: {id} doesn't exist in the database.");
-                return NotFound();
-            }
-
+            var concertEntity = HttpContext.Items["concertForArtistForGenre"] as Concert;
             _mapper.Map(concert, concertEntity);
             _serviceManager.SaveAsync();
 
