@@ -11,6 +11,6 @@ namespace Entities.DataTransferObjects
         
         [Required, DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd/MMM/yyyy HH:mm:ss}")]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }
