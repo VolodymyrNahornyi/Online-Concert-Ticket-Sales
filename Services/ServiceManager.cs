@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Contracts;
 
 namespace Services
@@ -6,11 +7,13 @@ namespace Services
     public class ServiceManager : IServiceManager
     {
         private readonly IRepositoryManager _repositoryManager;
+        private readonly IMapper _mapper;
 
 
-        public ServiceManager(IRepositoryManager repositoryManager)
+        public ServiceManager(IRepositoryManager repositoryManager, IMapper mapper)
         {
             _repositoryManager = repositoryManager;
+            _mapper = mapper;
         }
 
         private IGenreService _genreService;
@@ -33,7 +36,7 @@ namespace Services
             get
             {
                 if (_artistService == null)
-                    _artistService = new ArtistService(_repositoryManager);
+                    _artistService = new ArtistService(_repositoryManager, _mapper);
 
                 return _artistService;
             }

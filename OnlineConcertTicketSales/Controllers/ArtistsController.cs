@@ -46,14 +46,12 @@ namespace OnlineConcertTicketSales.Controllers
                 return NotFound();
             }
 
-            var artistsFromDb = await _serviceManager.Artist.GetArtistsAsync(genreId, artistParameters, false);
+            var artistsDto = await _serviceManager.Artist.GetArtistsAsync(genreId, artistParameters, false);
 
             //Add Pagination MetaData to the Response
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(artistsFromDb.MetaData));
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(artistsDto.MetaData));
             
-            var artistsDto = _mapper.Map<IEnumerable<ArtistDto>>(artistsFromDb);
-            
-            var links = _artistLinks.TryGenerateLinks(artistsDto, artistParameters.Fields,
+            var links = _artistLinks.TryGenerateLinks(artistsDto.ArtistsDto, artistParameters.Fields,
                 genreId, HttpContext);
             
             return links.HasLinks ? Ok(links.LinkedEntities) : Ok(links.ShapedEntities);
@@ -70,14 +68,12 @@ namespace OnlineConcertTicketSales.Controllers
                 return NotFound();
             }
 
-            var artistFromDb = await _serviceManager.Artist.GetArtistAsync(genreId, id, false);
-            if (artistFromDb == null)
+            var artistDto = await _serviceManager.Artist.GetArtistAsync(genreId, id, false);
+            if (artistDto == null)
             {
                 _logger.LogInfo($"Artist with id: {id} doesn't exist in the database.");
                 return NotFound();
             }
-
-            var artistDto = _mapper.Map<ArtistDto>(artistFromDb);
 
             return Ok(_dataShaper.ShapeData(artistDto, artistParameters.Fields));
         }
