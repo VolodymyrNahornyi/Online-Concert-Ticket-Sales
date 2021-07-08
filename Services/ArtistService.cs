@@ -28,11 +28,6 @@ namespace Services
             return artistsCol;
         }
 
-        // public async Task<PagedList<Artist>> GetArtistsAsync(Guid genreId, ArtistParameters artistParameters, bool trackChanges)
-        // {
-        //     return await _repositoryManager.Artist.GetArtistsAsync(genreId, artistParameters, trackChanges);
-        // }
-
         public async Task<ArtistDto> GetArtistAsync(Guid genreId, Guid id, bool trackChanges)
         {
             var artist = await _repositoryManager.Artist.GetArtistAsync(genreId, id, trackChanges);
@@ -44,11 +39,20 @@ namespace Services
             return null;
         }
 
-        public void CreateArtist(Guid genreId, Artist artist)
+        public async Task<Artist> CreateArtist(Guid genreId, ArtistForCreationDto artist)
         {
-            _repositoryManager.Artist.CreateArtist(genreId, artist);
+            var artistEntity = _mapper.Map<Artist>(artist);
+            _repositoryManager.Artist.CreateArtist(genreId, artistEntity);
+            await _repositoryManager.SaveAsync();
+
+            return artistEntity;
         }
 
+        public ArtistDto GetArtistTuReturn(Artist artist)
+        {
+            return _mapper.Map<ArtistDto>(artist);
+        }
+        
         public void DeleteArtist(Artist artist)
         {
             _repositoryManager.Artist.DeleteArtist(artist);

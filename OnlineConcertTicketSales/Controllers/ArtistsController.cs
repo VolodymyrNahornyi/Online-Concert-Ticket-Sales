@@ -88,13 +88,10 @@ namespace OnlineConcertTicketSales.Controllers
                 _logger.LogError($"Genre with id: {genreId} doesn't exist in the database.");
                 return NotFound();
             }
-
-            var artistEntity = _mapper.Map<Artist>(artist);
             
-            _serviceManager.Artist.CreateArtist(genreId, artistEntity);
-            await _serviceManager.SaveAsync();
+            var artistEntity = await _serviceManager.Artist.CreateArtist(genreId, artist);
 
-            var artistToReturn = _mapper.Map<ArtistDto>(artistEntity);
+            var artistToReturn = _serviceManager.Artist.GetArtistTuReturn(artistEntity);
 
             return CreatedAtRoute("GetArtistForGenre", new {genreId, id = artistToReturn.Id},
                 artistToReturn);
