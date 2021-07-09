@@ -35,7 +35,7 @@ namespace OnlineConcertTicketSales.ActionFilters
 
             var id = (Guid)context.ActionArguments["id"];
             
-            var artistForGenre = await _serviceManager.Artist.GetArtistAsync(genreId, id, trackChanges);
+            var artistForGenre = await _serviceManager.Artist.GetArtistForValidationAsync(genreId, id, trackChanges);
 
             if (artistForGenre == null)
             {

@@ -89,9 +89,7 @@ namespace OnlineConcertTicketSales.Controllers
                 return NotFound();
             }
             
-            var artistEntity = await _serviceManager.Artist.CreateArtist(genreId, artist);
-
-            var artistToReturn = _serviceManager.Artist.GetArtistTuReturn(artistEntity);
+            var artistToReturn = await _serviceManager.Artist.CreateArtist(genreId, artist);
 
             return CreatedAtRoute("GetArtistForGenre", new {genreId, id = artistToReturn.Id},
                 artistToReturn);
@@ -102,9 +100,8 @@ namespace OnlineConcertTicketSales.Controllers
         public async Task<IActionResult> DeleteArtistForGenre(Guid genreId, Guid id)
         {
             var artistForGenre = HttpContext.Items["artistForGenre"] as Artist;
-            
-            _serviceManager.Artist.DeleteArtist(artistForGenre);
-            await _serviceManager.SaveAsync();
+
+            await _serviceManager.Artist.DeleteArtist(artistForGenre);
 
             _logger.LogInfo($"Artist with id: {id} is deleted successfully.");
             
@@ -117,9 +114,8 @@ namespace OnlineConcertTicketSales.Controllers
         public async Task<IActionResult> UpdateArtistForGenre(Guid genreId, Guid id, [FromBody] ArtistForUpdateDto artist)
         {
             var artistEntity = HttpContext.Items["artistForGenre"] as Artist;
-            
-            _mapper.Map(artist, artistEntity);
-            await _serviceManager.SaveAsync();
+
+            await _serviceManager.Artist.UpdateArtist(artist, artistEntity);
 
             return NoContent();
         }

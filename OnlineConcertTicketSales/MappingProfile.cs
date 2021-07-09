@@ -9,7 +9,7 @@ namespace OnlineConcertTicketSales
         public MappingProfile()
         {
             CreateMap<Genre, GenreDto>();
-            CreateMap<Artist, ArtistDto>();
+            CreateMap<Artist, ArtistDto>().ReverseMap();
             CreateMap<GenreForCreationDto, Genre>();
             CreateMap<ArtistForCreationDto, Artist>();
             CreateMap<ArtistForUpdateDto, Artist>().ReverseMap();
