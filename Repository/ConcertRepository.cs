@@ -21,7 +21,9 @@ namespace Repository
         {
             var concerts = await FindByCondition(c => c.Artist.GenreId.Equals(genreId) 
                                                       && c.ArtistId.Equals(artistId), trackChanges)
-                .ToListAsync();
+                    .FilterConcerts(concertParameters.StartDate, concertParameters.EndDate)
+                    .Search(concertParameters.SearchTerm)
+                    .ToListAsync();
             
             return PagedList<Concert>.ToPagedList(concerts, concertParameters.PageNumber, concertParameters.PageSize);
         }

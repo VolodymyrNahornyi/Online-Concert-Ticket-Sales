@@ -40,6 +40,11 @@ namespace OnlineConcertTicketSales.Controllers
         [HttpHead]
         public async Task<IActionResult> GetConcertsForArtistForGenreAsync(Guid genreId, Guid artistId, [FromQuery] ConcertParameters concertParameters)
         {
+            if (!concertParameters.ValidDateRange)
+            {
+                return BadRequest("End date can't be less than start date.");
+            }
+            
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
             if (genre == null)
             {
