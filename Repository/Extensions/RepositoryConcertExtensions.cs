@@ -25,17 +25,17 @@ namespace Repository.Extensions
         }
 
 
-        // public static IQueryable<Artist> Sort(this IQueryable<Artist> artists, string orderByQueryString)
-        // {
-        //     if (string.IsNullOrWhiteSpace(orderByQueryString))
-        //         return artists.OrderBy(a => a.ArtistName);
-        //
-        //     var orderQuery = OrderQueryBuilder.CreateOrderQuery<Artist>(orderByQueryString);
-        //     
-        //     if (string.IsNullOrWhiteSpace(orderQuery))
-        //         return artists.OrderBy(a => a.ArtistName);
-        //
-        //     return artists.OrderBy(orderQuery);
-        // }
+        public static IQueryable<Concert> Sort(this IQueryable<Concert> concerts, string orderByQueryString)
+        {
+            if (string.IsNullOrWhiteSpace(orderByQueryString))
+                return concerts.OrderBy(c => c.ConcertName);
+            
+            var orderQuery = OrderQueryBuilder.CreateOrderQuery<Concert>(orderByQueryString);
+            
+            if (string.IsNullOrWhiteSpace(orderQuery))
+                return concerts.OrderBy(c => c.ConcertName);
+        
+            return concerts.OrderBy(orderQuery);
+        }
     }
 }

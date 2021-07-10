@@ -23,6 +23,7 @@ namespace Repository
                                                       && c.ArtistId.Equals(artistId), trackChanges)
                     .FilterConcerts(concertParameters.StartDate, concertParameters.EndDate)
                     .Search(concertParameters.SearchTerm)
+                    .Sort(concertParameters.OrderBy)
                     .ToListAsync();
             
             return PagedList<Concert>.ToPagedList(concerts, concertParameters.PageNumber, concertParameters.PageSize);
