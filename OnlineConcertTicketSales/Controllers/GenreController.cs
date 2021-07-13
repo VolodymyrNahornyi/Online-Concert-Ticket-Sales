@@ -37,6 +37,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetGenres")]
+        [ResponseCache(Duration = 60)]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetGenres([FromQuery] GenreParameters genreParameters)
         {
