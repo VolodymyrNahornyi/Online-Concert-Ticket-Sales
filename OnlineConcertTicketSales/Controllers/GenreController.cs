@@ -14,6 +14,7 @@ using OnlineConcertTicketSales.Utility;
 
 namespace OnlineConcertTicketSales.Controllers
 {
+    [ApiVersion("2.0")]
     [Route("api/genres")]
     [ApiController]
     public class GenreController : ControllerBase

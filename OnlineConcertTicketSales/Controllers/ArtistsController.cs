@@ -14,6 +14,7 @@ using OnlineConcertTicketSales.Utility;
 
 namespace OnlineConcertTicketSales.Controllers
 {
+    [ApiVersion("2.0")]
     [Route("api/genres/{genreId}/artists")]
     [ApiController]
     public class ArtistsController : ControllerBase
@@ -33,7 +34,7 @@ namespace OnlineConcertTicketSales.Controllers
             _dataShaper = dataShaper;
             _artistLinks = artistLinks;
         }
-
+        
         [HttpGet]
         [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
