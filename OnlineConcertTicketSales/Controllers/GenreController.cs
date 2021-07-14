@@ -17,6 +17,7 @@ namespace OnlineConcertTicketSales.Controllers
     [ApiVersion("2.0")]
     [Route("api/genres")]
     [ApiController]
+    [ResponseCache(CacheProfileName = "120SecondsDuration")]
     public class GenreController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
