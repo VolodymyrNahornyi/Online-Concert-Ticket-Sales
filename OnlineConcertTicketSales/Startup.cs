@@ -62,6 +62,7 @@ namespace OnlineConcertTicketSales
             services.AddScoped<ValidateMediaTypeAttribute>();
             services.ConfigureVersioning();
             services.ConfigureResponseCaching();
+            services.ConfigureHttpCacheHeaders();
             
             services.AddScoped<ArtistLinks>();
             services.AddScoped<GenreLinks>();
@@ -106,6 +107,7 @@ namespace OnlineConcertTicketSales
             });
 
             app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
             
             app.UseRouting();
 
