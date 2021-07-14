@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreRateLimit;
 using Contracts;
 using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Builder;
@@ -64,6 +65,8 @@ namespace OnlineConcertTicketSales
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
             
+            
+            
             services.AddScoped<ArtistLinks>();
             services.AddScoped<GenreLinks>();
             
@@ -80,6 +83,11 @@ namespace OnlineConcertTicketSales
             //APIRoot JSON or XML media types
             services.AddCustomMediaTypes();
 
+            //Memory Cache to store rate limit counters and rules
+                        services.AddMemoryCache();
+                        services.ConfigureRateLimitingOptions();
+                        services.AddHttpContextAccessor();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "OnlineConcertTicketSales", Version = "v1"});
@@ -108,6 +116,8 @@ namespace OnlineConcertTicketSales
 
             app.UseResponseCaching();
             app.UseHttpCacheHeaders();
+            
+            app.UseIpRateLimiting();
             
             app.UseRouting();
 
