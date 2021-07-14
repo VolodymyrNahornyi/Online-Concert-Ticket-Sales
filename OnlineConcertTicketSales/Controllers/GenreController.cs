@@ -7,6 +7,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Entities.RequestFeatures;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.ModelBinders;
@@ -17,7 +18,6 @@ namespace OnlineConcertTicketSales.Controllers
     [ApiVersion("2.0")]
     [Route("api/genres")]
     [ApiController]
-    [ResponseCache(CacheProfileName = "120SecondsDuration")]
     public class GenreController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -38,7 +38,6 @@ namespace OnlineConcertTicketSales.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetGenres")]
-        [ResponseCache(Duration = 60)]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetGenres([FromQuery] GenreParameters genreParameters)
         {
@@ -65,6 +64,8 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="id">Uniq ID for single genre</param>
         /// <returns></returns>
         [HttpGet("{id}", Name = "GenreById")]
+        //[HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
+        //[HttpCacheValidation(MustRevalidate = false)]
         public async Task<IActionResult> GetGenre(Guid id)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(id, false);
