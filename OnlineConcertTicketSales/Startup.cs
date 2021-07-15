@@ -67,6 +67,7 @@ namespace OnlineConcertTicketSales
             
             services.AddAuthentication();
             services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
             
             
             
