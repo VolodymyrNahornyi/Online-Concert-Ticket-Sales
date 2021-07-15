@@ -65,6 +65,9 @@ namespace OnlineConcertTicketSales
             services.ConfigureResponseCaching();
             services.ConfigureHttpCacheHeaders();
             
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            
             
             
             services.AddScoped<ArtistLinks>();
@@ -121,6 +124,7 @@ namespace OnlineConcertTicketSales
             
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

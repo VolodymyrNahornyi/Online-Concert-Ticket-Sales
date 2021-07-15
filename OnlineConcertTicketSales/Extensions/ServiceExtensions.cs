@@ -6,6 +6,7 @@ using Entities;
 using LoggerService;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -128,6 +129,22 @@ namespace OnlineConcertTicketSales.Extensions
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
         }
 
-        
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            var builder = services.AddIdentityCore<User>(o =>
+            {
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 10;
+                o.User.RequireUniqueEmail = true;
+            });
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<RepositoryContext>()
+                .AddDefaultTokenProviders();
+
+        }
+
     }
 }
