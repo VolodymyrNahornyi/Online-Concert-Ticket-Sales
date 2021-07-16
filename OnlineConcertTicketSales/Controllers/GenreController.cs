@@ -8,6 +8,7 @@ using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Entities.RequestFeatures;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineConcertTicketSales.ActionFilters;
 using OnlineConcertTicketSales.ModelBinders;
@@ -17,6 +18,7 @@ namespace OnlineConcertTicketSales.Controllers
 {
     [ApiVersion("2.0")]
     [Route("api/genres")]
+    [Authorize]
     [ApiController]
     public class GenreController : ControllerBase
     {
@@ -88,6 +90,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <returns></returns>
         [HttpPost(Name = "CreateGenre")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateGenre([FromBody] GenreForCreationDto genre)
         {
             var genreEntity = _mapper.Map<Genre>(genre);
@@ -132,6 +135,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <param name="genreCollection">Genre Collection [FromBody]</param>
         /// <returns></returns>
         [HttpPost("collection")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateGenreCollection([FromBody] IEnumerable<GenreForCreationDto> genreCollection)
         {
             if (genreCollection == null)
@@ -156,6 +160,7 @@ namespace OnlineConcertTicketSales.Controllers
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateGenreExistsAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteGenre(Guid id)
         {
             var genre = HttpContext.Items["genre"] as Genre;
@@ -169,6 +174,7 @@ namespace OnlineConcertTicketSales.Controllers
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateGenreExistsAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateGenre(Guid id, [FromBody]GenreForUpdateDto genre)
         {
             var genreEntity = HttpContext.Items["genre"] as Genre;
