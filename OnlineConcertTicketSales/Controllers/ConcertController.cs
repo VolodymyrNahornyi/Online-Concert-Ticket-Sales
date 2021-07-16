@@ -6,6 +6,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,6 +18,7 @@ namespace OnlineConcertTicketSales.Controllers
     [ApiVersion("2.0")]
     [Route("api/genres/{genreId}/artists/{artistId}/concerts")]
     [ApiController]
+    [Authorize]
     public class ConcertController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -116,6 +118,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <returns>Response status 201 Ok. New Concert object</returns>
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateConcertForArtistForGenre(Guid genreId, Guid artistId, [FromBody] ConcertForCreationDto concert)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
@@ -150,6 +153,7 @@ namespace OnlineConcertTicketSales.Controllers
         /// <returns>Response status 204 NoContent</returns>
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateConcertForArtistForGenreExistsAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id)
         {
             var concertForArtistForGenre = HttpContext.Items["concertForArtistForGenre"] as Concert;
@@ -171,6 +175,7 @@ namespace OnlineConcertTicketSales.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateConcertForArtistForGenreExistsAttribute))]
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateConcertForArtistForGenre(Guid genreId, Guid artistId, Guid id,
             [FromBody] ConcertForUpdateDto concert)
         {
