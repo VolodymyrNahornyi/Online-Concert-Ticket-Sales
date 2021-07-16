@@ -6,6 +6,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models.Concerts;
 using Entities.RequestFeatures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -17,6 +18,7 @@ namespace OnlineConcertTicketSales.Controllers
     [ApiVersion("2.0")]
     [Route("api/genres/{genreId}/artists")]
     [ApiController]
+    [Authorize]
     public class ArtistsController : ControllerBase
     {
         private readonly IServiceManager _serviceManager;
@@ -81,6 +83,7 @@ namespace OnlineConcertTicketSales.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> CreateArtistForGenre(Guid genreId, [FromBody] ArtistForCreationDto artist)
         {
             var genre = await _serviceManager.Genre.GetGenreAsync(genreId, false);
@@ -98,6 +101,7 @@ namespace OnlineConcertTicketSales.Controllers
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateArtistForGenreExistsAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteArtistForGenre(Guid genreId, Guid id)
         {
             var artistForGenre = HttpContext.Items["artistForGenre"] as Artist;
@@ -112,6 +116,7 @@ namespace OnlineConcertTicketSales.Controllers
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateArtistForGenreExistsAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> UpdateArtistForGenre(Guid genreId, Guid id, [FromBody] ArtistForUpdateDto artist)
         {
             var artistEntity = HttpContext.Items["artistForGenre"] as Artist;
@@ -123,6 +128,7 @@ namespace OnlineConcertTicketSales.Controllers
 
         [HttpPatch("{id}")]
         [ServiceFilter(typeof(ValidateArtistForGenreExistsAttribute))]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PartiallyUpdateArtistForGenre(Guid genreId, Guid id,
             [FromBody] JsonPatchDocument<ArtistForUpdateDto> patchDoc)
         {
