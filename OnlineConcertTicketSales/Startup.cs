@@ -89,14 +89,12 @@ namespace OnlineConcertTicketSales
             services.AddCustomMediaTypes();
 
             //Memory Cache to store rate limit counters and rules
-                        services.AddMemoryCache();
-                        services.ConfigureRateLimitingOptions();
-                        services.AddHttpContextAccessor();
+            services.AddMemoryCache();
+            services.ConfigureRateLimitingOptions();
+            services.AddHttpContextAccessor();
             
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "OnlineConcertTicketSales", Version = "v1"});
-            });
+            services.ConfigureSwagger();
+                        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,8 +103,12 @@ namespace OnlineConcertTicketSales
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseStatusCodePages();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineConcertTicketSales v1"));
+                app.UseSwaggerUI(s =>
+                {
+                    s.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineConcertTicketSales v1");
+                });
             }
 
             app.ConfigureExceptionHandler(logger);
